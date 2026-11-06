@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+{% block title %}Apply for Job | SmartHire{% endblock %}
+
+{% block content %}
+
+<style>
+    .apply-wrapper {
+        background: #f4f6ff;
+        min-height: 100vh;
+        padding: 50px 0;
+    }
+
+    .apply-card {
+        background: white;
+        padding: 35px;
+        border-radius: 20px;
+        box-shadow: 0 10px 35px rgba(30, 50, 100, 0.08);
+        max-width: 750px;
+        margin: auto;
+    }
+
+    .apply-heading {
+        color: #243b80;
+        font-weight: 750;
+    }
+
+    .job-info {
+        background: #eef2ff;
+        padding: 20px;
+        border-radius: 14px;
+        margin: 25px 0;
+    }
+
+    .submit-btn {
+        background: linear-gradient(135deg, #4361ee, #7209b7);
+        color: white;
+        border: none;
+        padding: 12px 25px;
+        border-radius: 10px;
+        font-weight: 600;
+    }
+
+    .submit-btn:hover {
+        color: white;
+        opacity: 0.9;
+    }
+</style>
+
+<div class="apply-wrapper">
+    <div class="container">
+
+        <div class="apply-card">
+
+            <h2 class="apply-heading">Apply for This Job</h2>
+            <p class="text-secondary">
+                Submit your application to the recruiter.
+            </p>
+
+            <div class="job-info">
+                <h5 class="fw-bold">{{ job.job_title }}</h5>
+                <p class="text-primary fw-semibold mb-1">
+                    {{ job.company_name }}
+                </p>
+                <small class="text-secondary">
+                    {{ job.location }} | {{ job.job_type }}
+                </small>
+            </div>
+
+            <form method="POST"
+                  action="{{ url_for('apply_job', job_id=job.id) }}">
+
+                <div class="mb-4">
+                    <label class="form-label fw-semibold">
+                        Cover Letter (Optional)
+                    </label>
+
+                    <textarea
+                        name="cover_letter"
+                        class="form-control"
+                        rows="7"
+                        placeholder="Introduce yourself and explain why you are suitable for this position..."
+                    ></textarea>
+                </div>
+
+                <div class="d-flex gap-3 flex-wrap">
+                    <button type="submit" class="submit-btn">
+                        <i class="fa-solid fa-paper-plane"></i>
+                        Submit Application
+                    </button>
+
+                    <a href="{{ url_for('job_details', job_id=job.id) }}"
+                       class="btn btn-outline-secondary">
+                        Cancel
+                    </a>
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

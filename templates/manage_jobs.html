@@ -1,0 +1,373 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+
+<style>
+    .manage-container {
+        padding: 45px 0;
+        min-height: 85vh;
+        background: #f5f7ff;
+    }
+
+    .manage-header {
+        background: linear-gradient(120deg, #2563eb, #6d5dfc);
+        color: white;
+        padding: 35px;
+        border-radius: 22px;
+        margin-bottom: 30px;
+        box-shadow: 0 12px 30px rgba(37, 99, 235, 0.18);
+    }
+
+    .manage-header h2 {
+        font-weight: 800;
+        margin-bottom: 10px;
+    }
+
+    .manage-header p {
+        opacity: 0.9;
+        margin-bottom: 0;
+    }
+
+    .job-count {
+        background: rgba(255,255,255,0.18);
+        padding: 15px 22px;
+        border-radius: 15px;
+        text-align: center;
+    }
+
+    .job-card {
+        background: white;
+        border: 1px solid #edf0f7;
+        border-radius: 18px;
+        padding: 25px;
+        margin-bottom: 20px;
+        box-shadow: 0 5px 20px rgba(30, 41, 59, 0.05);
+        transition: 0.3s ease;
+    }
+
+    .job-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 28px rgba(30, 41, 59, 0.10);
+    }
+
+    .job-icon {
+        width: 55px;
+        height: 55px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 15px;
+        background: #eef2ff;
+        color: #4f46e5;
+        font-size: 23px;
+        flex-shrink: 0;
+    }
+
+    .job-title {
+        font-weight: 750;
+        color: #172554;
+        margin-bottom: 6px;
+    }
+
+    .job-company {
+        color: #64748b;
+        font-size: 14px;
+    }
+
+    .job-info {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 18px;
+        margin-top: 22px;
+        color: #64748b;
+        font-size: 14px;
+    }
+
+    .job-info i {
+        color: #6366f1;
+        margin-right: 6px;
+    }
+
+    .job-badge {
+        background: #ecfdf5;
+        color: #059669;
+        padding: 7px 13px;
+        border-radius: 30px;
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+    .job-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 22px;
+        padding-top: 18px;
+        border-top: 1px solid #edf0f7;
+    }
+
+    .action-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 10px 16px;
+        border-radius: 9px;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 700;
+        transition: 0.3s;
+    }
+
+    .btn-ai {
+        background: linear-gradient(120deg, #087f5b, #10a878);
+        color: white;
+        border: none;
+    }
+
+    .btn-ai:hover {
+        background: linear-gradient(120deg, #066b4c, #087f5b);
+        color: white;
+        transform: translateY(-2px);
+    }
+
+    .btn-applicants {
+        background: #eef2ff;
+        color: #4f46e5;
+        border: 1px solid #dce3ff;
+    }
+
+    .btn-applicants:hover {
+        background: #e0e7ff;
+        color: #3730a3;
+        transform: translateY(-2px);
+    }
+
+    .empty-card {
+        background: white;
+        border-radius: 20px;
+        padding: 65px 20px;
+        text-align: center;
+        box-shadow: 0 5px 20px rgba(30, 41, 59, 0.05);
+    }
+
+    .empty-card i {
+        font-size: 55px;
+        color: #a5b4fc;
+        margin-bottom: 20px;
+    }
+
+    .btn-create {
+        background: linear-gradient(120deg, #2563eb, #6d5dfc);
+        color: white;
+        border: none;
+        border-radius: 10px;
+        padding: 12px 22px;
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .btn-create:hover {
+        color: white;
+        opacity: 0.9;
+    }
+
+    @media(max-width: 576px) {
+        .manage-header {
+            padding: 25px 20px;
+        }
+
+        .job-card {
+            padding: 20px;
+        }
+
+        .job-actions {
+            flex-direction: column;
+        }
+
+        .action-btn {
+            width: 100%;
+        }
+    }
+</style>
+
+<div class="manage-container">
+    <div class="container">
+
+        <!-- PAGE HEADER -->
+        <div class="manage-header">
+            <div class="row align-items-center">
+
+                <div class="col-md-9">
+                    <h2>
+                        <i class="fa-solid fa-briefcase me-2"></i>
+                        Manage Job Listings
+                    </h2>
+
+                    <p>
+                        View, manage and screen candidates for all your published opportunities.
+                    </p>
+                </div>
+
+                <div class="col-md-3 mt-3 mt-md-0">
+                    <div class="job-count">
+                        <h2 class="mb-0">{{ jobs|length }}</h2>
+                        <small>Published Jobs</small>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- JOB SECTION HEADER -->
+        <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+
+            <div>
+                <h4 class="fw-bold mb-1">Your Job Opportunities</h4>
+                <p class="text-secondary mb-0">
+                    Manage your recruitment listings and candidates.
+                </p>
+            </div>
+
+            <a href="{{ url_for('post_job') }}" class="btn-create">
+                <i class="fa-solid fa-plus me-2"></i>
+                Post New Job
+            </a>
+
+        </div>
+
+        <!-- JOB LIST -->
+        {% if jobs %}
+
+            {% for job in jobs %}
+
+                <div class="job-card">
+
+                    <!-- JOB TITLE AND STATUS -->
+                    <div class="d-flex justify-content-between align-items-start flex-wrap gap-3">
+
+                        <div class="d-flex gap-3 align-items-center">
+
+                            <div class="job-icon">
+                                <i class="fa-solid fa-building"></i>
+                            </div>
+
+                            <div>
+                                <h5 class="job-title">
+                                    {{ job.job_title }}
+                                </h5>
+
+                                <div class="job-company">
+                                    {{ job.company_name }}
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <span class="job-badge">
+                            <i class="fa-solid fa-circle-check me-1"></i>
+                            Published
+                        </span>
+
+                    </div>
+
+                    <!-- JOB INFORMATION -->
+                    <div class="job-info">
+
+                        <span>
+                            <i class="fa-solid fa-location-dot"></i>
+                            {{ job.location }}
+                        </span>
+
+                        <span>
+                            <i class="fa-solid fa-clock"></i>
+                            {{ job.job_type }}
+                        </span>
+
+                        <span>
+                            <i class="fa-solid fa-money-bill-wave"></i>
+                            {{ job.salary or "Not specified" }}
+                        </span>
+
+                        <span>
+                            <i class="fa-solid fa-calendar"></i>
+                            {{ job.created_at.strftime('%d %b %Y') }}
+                        </span>
+
+                    </div>
+
+                    <!-- REQUIRED SKILLS -->
+                    {% if job.skills_required %}
+
+                        <div class="mt-3">
+
+                            <strong class="small text-secondary">
+                                Required Skills:
+                            </strong>
+
+                            <p class="text-secondary small mb-0 mt-1">
+                                {{ job.skills_required }}
+                            </p>
+
+                        </div>
+
+                    {% endif %}
+
+                    <!-- ACTION BUTTONS -->
+                    <div class="job-actions">
+
+                        <a
+                            href="{{ url_for('ai_resume_screening', job_id=job.id) }}"
+                            class="action-btn btn-ai">
+
+                            <i class="fa-solid fa-robot"></i>
+                            AI Resume Screening
+
+                        </a>
+
+                        <a
+                            href="{{ url_for('view_applicants') }}"
+                            class="action-btn btn-applicants">
+
+                            <i class="fa-solid fa-users"></i>
+                            View Applicants
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <!-- EMPTY STATE -->
+            <div class="empty-card">
+
+                <i class="fa-solid fa-folder-open"></i>
+
+                <h4 class="fw-bold">
+                    No Jobs Posted Yet
+                </h4>
+
+                <p class="text-secondary mb-4">
+                    You haven't published any job opportunities.
+                    Create your first listing!
+                </p>
+
+                <a href="{{ url_for('post_job') }}" class="btn-create">
+                    <i class="fa-solid fa-plus me-2"></i>
+                    Create Your First Job
+                </a>
+
+            </div>
+
+        {% endif %}
+
+    </div>
+</div>
+
+{% endblock %}

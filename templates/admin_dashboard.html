@@ -1,0 +1,1160 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartHire | Admin Control Center</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background: #f3f5fb;
+            color: #17213d;
+        }
+
+        .sidebar {
+            width: 260px;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            background: linear-gradient(180deg, #101a38, #172b55 65%, #203c73);
+            padding: 27px 18px;
+            color: white;
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .brand {
+            font-size: 25px;
+            font-weight: 800;
+            color: white;
+            text-decoration: none;
+            display: block;
+            padding: 0 12px 30px;
+        }
+
+        .brand i { color: #69a2ff; margin-right: 9px; }
+
+        .admin-label {
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 1.7px;
+            color: #8296bd;
+            padding: 15px 13px 12px;
+        }
+
+        .side-link {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            padding: 13px 14px;
+            border-radius: 11px;
+            color: #c3cee4;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            transition: .25s;
+        }
+
+        .side-link i { width: 19px; text-align: center; }
+
+        .side-link:hover, .side-link.active {
+            color: white;
+            background: linear-gradient(100deg, #3266d9, #5578e8);
+            box-shadow: 0 6px 17px rgba(44,100,225,.25);
+        }
+
+        .sidebar-bottom {
+            margin-top: 35px;
+            padding: 16px 12px;
+            border-radius: 13px;
+            background: rgba(255,255,255,.07);
+        }
+
+        .sidebar-bottom p {
+            font-size: 11px;
+            color: #aab9d4;
+            line-height: 1.6;
+            margin: 8px 0 0;
+        }
+
+        .main-content {
+            margin-left: 260px;
+            padding: 30px 35px 45px;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .page-title {
+            font-size: 25px;
+            font-weight: 800;
+            margin: 0;
+        }
+
+        .page-subtitle {
+            font-size: 13px;
+            color: #8590a7;
+            margin-top: 7px;
+        }
+
+        .admin-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: white;
+            padding: 10px 15px;
+            border-radius: 13px;
+            box-shadow: 0 4px 15px rgba(20,40,90,.04);
+        }
+
+        .avatar {
+            width: 42px;
+            height: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg,#315bea,#7547d8);
+            color: white;
+            border-radius: 12px;
+        }
+
+        .admin-profile strong { display: block; font-size: 12px; }
+        .admin-profile small { color: #8993a8; font-size: 10px; }
+
+        .welcome-banner {
+            position: relative;
+            overflow: hidden;
+            padding: 32px;
+            border-radius: 20px;
+            background: linear-gradient(110deg,#1b3474,#315bd2 65%,#704ed0);
+            color: white;
+            margin-bottom: 25px;
+            box-shadow: 0 12px 30px rgba(49,91,210,.16);
+        }
+
+        .welcome-banner h2 {
+            font-size: 25px;
+            font-weight: 800;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .welcome-banner p {
+            font-size: 13px;
+            color: #dce7ff;
+            margin: 0;
+            max-width: 600px;
+            line-height: 1.7;
+            position: relative;
+            z-index: 1;
+        }
+
+        .banner-icon {
+            position: absolute;
+            right: 75px;
+            bottom: 24px;
+            font-size: 75px;
+            color: rgba(255,255,255,.18);
+        }
+
+        .section-heading {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin: 30px 0 17px;
+        }
+
+        .section-title {
+            font-size: 17px;
+            font-weight: 800;
+            margin: 0;
+        }
+
+        .refresh-btn {
+            border: 1px solid #dce3f1;
+            background: white;
+            color: #4267d5;
+            border-radius: 9px;
+            padding: 9px 13px;
+            font-size: 11px;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .refresh-btn:hover {
+            background: #4267d5;
+            color: white;
+        }
+
+        .stats-grid, .management-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 17px;
+            width: 100%;
+            align-items: stretch;
+        }
+
+        .stat-card, .management-card {
+            background: white;
+            padding: 22px;
+            border-radius: 16px;
+            border: 1px solid #e9edf6;
+            box-shadow: 0 5px 18px rgba(20,40,90,.035);
+            transition: .25s;
+        }
+
+        .stat-card:hover, .management-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 25px rgba(20,40,90,.09);
+        }
+
+        .stat-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .stat-icon, .management-icon {
+            width: 46px;
+            height: 46px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 13px;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .stat-card h3 {
+            font-size: 29px;
+            font-weight: 800;
+            margin: 0 0 5px;
+        }
+
+        .stat-card p {
+            margin: 0;
+            font-size: 12px;
+            color: #8791a6;
+            font-weight: 600;
+        }
+
+        .stat-note {
+            font-size: 10px;
+            color: #8993a8;
+        }
+
+        .blue-bg { background: #eaf0ff; color: #3864dc; }
+        .purple-bg { background: #f0eaff; color: #8051d5; }
+        .green-bg { background: #e4f8ef; color: #159765; }
+        .orange-bg { background: #fff0e3; color: #e68a36; }
+        .pink-bg { background: #ffeaf1; color: #dc5481; }
+        .cyan-bg { background: #e3f8fb; color: #1597a8; }
+
+        .management-card {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            text-decoration: none;
+            color: #17213d;
+            cursor: pointer;
+            padding: 23px;
+            min-width: 0;
+            min-height: 235px;
+            width: 100%;
+        }
+
+        .management-card:hover { color: #315bd2; }
+
+        .management-icon {
+            background: #edf2ff;
+            color: #4267d5;
+            margin-bottom: 17px;
+        }
+
+        .management-card h5 {
+            font-size: 14px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .management-card p {
+            font-size: 11px;
+            color: #8490a5;
+            line-height: 1.7;
+            min-height: 38px;
+            margin-bottom: 15px;
+            width: 100%;
+        }
+
+        .coming-soon {
+            display: inline-block;
+            padding: 8px 12px;
+            background: #eaf0ff;
+            color: #4267d5;
+            font-size: 10px;
+            font-weight: 700;
+            border-radius: 20px;
+            margin-top: auto;
+        }
+
+        .quick-info {
+            background: white;
+            border: 1px solid #e9edf6;
+            padding: 23px;
+            border-radius: 16px;
+            margin-top: 25px;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            padding: 14px 0;
+            border-bottom: 1px solid #f0f2f7;
+            font-size: 12px;
+        }
+
+        .info-row:last-child { border-bottom: 0; }
+        .info-label { color: #8590a7; }
+        .info-value { font-weight: 700; color: #253454; }
+
+        .analytics-grid {
+            display: grid;
+            grid-template-columns: 1.3fr 1fr;
+            gap: 20px;
+        }
+
+        .analytics-card {
+            background: white;
+            border: 1px solid #e9edf6;
+            padding: 24px;
+            border-radius: 16px;
+            box-shadow: 0 5px 18px rgba(20,40,90,.035);
+            min-width: 0;
+        }
+
+        .analytics-card h5 {
+            font-size: 15px;
+            font-weight: 800;
+            margin-bottom: 22px;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+        }
+
+        .status-summary {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .status-box {
+            padding: 15px;
+            background: #f7f8fc;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .status-box h4 {
+            font-size: 22px;
+            font-weight: 800;
+            margin: 0 0 5px;
+        }
+
+        .status-box p {
+            color: #8490a5;
+            font-size: 11px;
+            margin: 0;
+        }
+
+        .footer {
+            margin-top: 35px;
+            text-align: center;
+            color: #9aa4b7;
+            font-size: 11px;
+        }
+
+        section[id] { scroll-margin-top: 25px; }
+
+        @media(max-width:1100px) {
+            .stats-grid, .management-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .analytics-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media(max-width:768px) {
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+            }
+
+            .sidebar-bottom { display: none; }
+
+            .main-content {
+                margin-left: 0;
+                padding: 22px 16px;
+            }
+
+            .topbar {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .banner-icon { display: none; }
+        }
+
+        @media(max-width:520px) {
+            .stats-grid, .management-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .status-summary {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .welcome-banner { padding: 25px 20px; }
+            .welcome-banner h2 { font-size: 21px; }
+            .chart-container { height: 250px; }
+        }
+    </style>
+</head>
+
+<body>
+
+<aside class="sidebar">
+
+    <a href="{{ url_for('admin_dashboard') }}" class="brand">
+        <i class="fa-solid fa-briefcase"></i>SmartHire
+    </a>
+
+    <div class="admin-label">ADMINISTRATION</div>
+
+    <a href="{{ url_for('admin_dashboard') }}" class="side-link active">
+        <i class="fa-solid fa-chart-pie"></i> Dashboard
+    </a>
+
+    <div class="admin-label">PLATFORM MANAGEMENT</div>
+
+    <a href="#overview" class="side-link">
+        <i class="fa-solid fa-chart-column"></i> Platform Overview
+    </a>
+
+    <a href="#user-management" class="side-link">
+        <i class="fa-solid fa-users"></i> User Management
+    </a>
+
+    <a href="#management" class="side-link">
+        <i class="fa-solid fa-building"></i> Management Center
+    </a>
+
+    <a href="#analytics" class="side-link">
+        <i class="fa-solid fa-chart-line"></i> Analytics & Reports
+    </a>
+
+    <a href="#platform-info" class="side-link">
+        <i class="fa-solid fa-circle-info"></i> Platform Information
+    </a>
+
+    <div class="admin-label">ACCOUNT</div>
+
+    <a href="{{ url_for('home') }}" class="side-link">
+        <i class="fa-solid fa-house"></i> Visit Website
+    </a>
+
+    <a href="{{ url_for('logout') }}" class="side-link">
+        <i class="fa-solid fa-right-from-bracket"></i> Logout
+    </a>
+
+    <div class="sidebar-bottom">
+        <i class="fa-solid fa-shield-halved" style="color:#80aaff;"></i>
+        <strong style="font-size:12px;margin-left:7px;">Admin Control Center</strong>
+        <p>Manage and monitor your SmartHire recruitment platform from one place.</p>
+    </div>
+
+</aside>
+
+<main class="main-content">
+
+    <header class="topbar">
+        <div>
+            <h1 class="page-title">Admin Dashboard</h1>
+            <p class="page-subtitle">Welcome to your SmartHire platform control center.</p>
+        </div>
+
+        <div class="admin-profile">
+            <div class="avatar">
+                <i class="fa-solid fa-user-shield"></i>
+            </div>
+            <div>
+                <strong>{{ current_user.full_name }}</strong>
+                <small>Platform Administrator</small>
+            </div>
+        </div>
+    </header>
+
+    <section class="welcome-banner">
+        <h2>Welcome back, {{ current_user.full_name }}! 👋</h2>
+        <p>
+            Here's what's happening across your SmartHire platform.
+            Monitor users, recruiters, job postings and applications
+            from your administration dashboard.
+        </p>
+        <i class="fa-solid fa-chart-line banner-icon"></i>
+    </section>
+
+    <!-- PLATFORM OVERVIEW -->
+    <section id="overview">
+
+        <div class="section-heading">
+            <h3 class="section-title">
+                <i class="fa-solid fa-chart-column me-2" style="color:#4267d5;"></i>
+                Platform Overview
+            </h3>
+
+            <a href="{{ url_for('admin_dashboard') }}" class="refresh-btn">
+                <i class="fa-solid fa-rotate-right me-1"></i> Refresh Statistics
+            </a>
+        </div>
+
+        <div class="stats-grid">
+
+            <div class="stat-card">
+                <div class="stat-top">
+                    <div class="stat-icon blue-bg"><i class="fa-solid fa-users"></i></div>
+                    <span class="stat-note">All accounts</span>
+                </div>
+                <h3>{{ total_users }}</h3>
+                <p>Total Registered Users</p>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-top">
+                    <div class="stat-icon purple-bg"><i class="fa-solid fa-user-tie"></i></div>
+                    <span class="stat-note">Candidates</span>
+                </div>
+                <h3>{{ total_job_seekers }}</h3>
+                <p>Job Seekers</p>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-top">
+                    <div class="stat-icon green-bg"><i class="fa-solid fa-building-user"></i></div>
+                    <span class="stat-note">Employers</span>
+                </div>
+                <h3>{{ total_recruiters }}</h3>
+                <p>Recruiters</p>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-top">
+                    <div class="stat-icon orange-bg"><i class="fa-solid fa-briefcase"></i></div>
+                    <span class="stat-note">Opportunities</span>
+                </div>
+                <h3>{{ total_jobs }}</h3>
+                <p>Total Job Postings</p>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-top">
+                    <div class="stat-icon pink-bg"><i class="fa-solid fa-file-circle-check"></i></div>
+                    <span class="stat-note">Candidate activity</span>
+                </div>
+                <h3>{{ total_applications }}</h3>
+                <p>Total Applications</p>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-top">
+                    <div class="stat-icon cyan-bg"><i class="fa-solid fa-city"></i></div>
+                    <span class="stat-note">Organizations</span>
+                </div>
+                <h3>{{ total_companies }}</h3>
+                <p>Registered Company Profiles</p>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- USER MANAGEMENT -->
+    <section id="user-management">
+
+        <div class="section-heading">
+            <h3 class="section-title">
+                <i class="fa-solid fa-users-gear me-2" style="color:#4267d5;"></i>
+                User Management
+            </h3>
+
+            <a href="{{ url_for('admin_dashboard') }}#user-management" class="refresh-btn">
+                <i class="fa-solid fa-rotate-right me-1"></i> Refresh Users
+            </a>
+        </div>
+
+        <div class="quick-info" style="margin-top:0;">
+
+            <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+                <div>
+                    <h5 style="font-weight:800;margin-bottom:5px;">Registered Users</h5>
+                    <small style="color:#8791a6;">Manage and monitor platform accounts</small>
+                </div>
+
+                <div class="d-flex gap-2 flex-wrap">
+                    <span class="badge rounded-pill text-bg-success p-2">
+                        Active: {{ active_users }}
+                    </span>
+
+                    <span class="badge rounded-pill text-bg-secondary p-2">
+                        Inactive: {{ inactive_users }}
+                    </span>
+                </div>
+            </div>
+
+            <input type="text" id="userSearch"
+                   class="form-control mb-3"
+                   placeholder="Search by name or email..."
+                   style="max-width:400px;padding:12px;">
+
+            <div class="table-responsive">
+                <table class="table align-middle">
+
+                    <thead class="table-light">
+                        <tr>
+                            <th>User</th>
+                            <th>User ID</th>
+                            <th>Role</th>
+                            <th>Account Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="userTableBody">
+
+                        {% for user in users %}
+
+                        <tr class="user-row">
+
+                            <td>
+                                <strong>{{ user.full_name }}</strong><br>
+                                <small class="text-muted">{{ user.email }}</small>
+                            </td>
+
+                            <td>#{{ user.id }}</td>
+
+                            <td>
+                                {% if user.role == 'admin' %}
+                                    <span class="badge rounded-pill text-bg-primary">Admin</span>
+                                {% elif user.role == 'recruiter' %}
+                                    <span class="badge rounded-pill text-bg-info">Recruiter</span>
+                                {% else %}
+                                    <span class="badge rounded-pill text-bg-secondary">Job Seeker</span>
+                                {% endif %}
+                            </td>
+
+                            <td>
+                                {% if user.is_active %}
+                                    <span class="badge rounded-pill text-bg-success">Active</span>
+                                {% else %}
+                                    <span class="badge rounded-pill text-bg-danger">Inactive</span>
+                                {% endif %}
+                            </td>
+
+                            <td>
+                                {% if user.role != 'admin' %}
+
+                                <form method="POST"
+                                      action="{{ url_for('toggle_user_status', user_id=user.id) }}"
+                                      onsubmit="return confirm('Are you sure you want to change this account status?');">
+
+                                    {% if user.is_active %}
+                                        <button type="submit" class="btn btn-sm btn-danger">
+                                            <i class="fa-solid fa-user-slash me-1"></i>
+                                            Deactivate
+                                        </button>
+                                    {% else %}
+                                        <button type="submit" class="btn btn-sm btn-success">
+                                            <i class="fa-solid fa-user-check me-1"></i>
+                                            Activate
+                                        </button>
+                                    {% endif %}
+
+                                </form>
+
+                                {% else %}
+                                    <span class="text-muted">Protected</span>
+                                {% endif %}
+                            </td>
+
+                        </tr>
+
+                        {% else %}
+
+                        <tr>
+                            <td colspan="5" class="text-center text-muted">
+                                No registered users found.
+                            </td>
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- MANAGEMENT CENTER -->
+    <section id="management">
+
+        <div class="section-heading">
+            <h3 class="section-title">
+                <i class="fa-solid fa-sliders me-2" style="color:#4267d5;"></i>
+                Management Center
+            </h3>
+        </div>
+
+        <div class="management-grid">
+
+            <a href="#user-management" class="management-card">
+                <div class="management-icon">
+                    <i class="fa-solid fa-users-gear"></i>
+                </div>
+                <h5>User Management</h5>
+                <p>View and manage job seeker, recruiter and administrator accounts.</p>
+                <span class="coming-soon">Open User Management →</span>
+            </a>
+
+            <a href="#user-management" class="management-card">
+                <div class="management-icon">
+                    <i class="fa-solid fa-building"></i>
+                </div>
+                <h5>Recruiter Management</h5>
+                <p>View recruiter accounts and monitor registered companies.</p>
+                <span class="coming-soon">View Registered Accounts →</span>
+            </a>
+
+            <a href="{{ url_for('admin_job_management') }}" class="management-card">
+                <div class="management-icon">
+                    <i class="fa-solid fa-briefcase"></i>
+                </div>
+                <h5>Job Management</h5>
+                <p>View and manage job postings across the SmartHire platform.</p>
+                <span class="coming-soon">Open Job Management →</span>
+            </a>
+
+            <a href="{{ url_for('admin_application_management') }}" class="management-card">
+                <div class="management-icon">
+                    <i class="fa-solid fa-file-circle-check"></i>
+                </div>
+                <h5>Application Management</h5>
+                <p>View all job applications and manage application statuses across the platform.</p>
+                <span class="coming-soon">Open Application Management →</span>
+            </a>
+
+            <!-- MODULE 30 ANALYTICS CARD -->
+            <a href="#analytics" class="management-card">
+                <div class="management-icon">
+                    <i class="fa-solid fa-chart-pie"></i>
+                </div>
+                <h5>Analytics & Reports</h5>
+                <p>Review platform performance, application statistics and recruitment activity.</p>
+                <span class="coming-soon">Open Analytics →</span>
+            </a>
+
+            <a href="#platform-info" class="management-card">
+                <div class="management-icon">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+                <h5>Security & Settings</h5>
+                <p>View administrator and platform information.</p>
+                <span class="coming-soon">View Platform Information →</span>
+            </a>
+
+        </div>
+    </section>
+
+    <!-- MODULE 30: ANALYTICS & REPORTS -->
+    <section id="analytics">
+
+        <div class="section-heading">
+            <div>
+                <h3 class="section-title">
+                    <i class="fa-solid fa-chart-pie me-2" style="color:#4267d5;"></i>
+                    Reports & Platform Analytics
+                </h3>
+                <p class="page-subtitle">
+                    Monitor SmartHire platform performance and recruitment activity.
+                </p>
+            </div>
+
+            <a href="{{ url_for('admin_dashboard') }}#analytics" class="refresh-btn">
+                <i class="fa-solid fa-rotate-right me-1"></i> Refresh Analytics
+            </a>
+        </div>
+
+        <!-- ANALYTICS SUMMARY -->
+        <div class="stats-grid">
+
+            <div class="stat-card">
+                <div class="stat-top">
+                    <div class="stat-icon blue-bg">
+                        <i class="fa-solid fa-users"></i>
+                    </div>
+                </div>
+                <h3>{{ total_users }}</h3>
+                <p>Total Users</p>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-top">
+                    <div class="stat-icon purple-bg">
+                        <i class="fa-solid fa-user-tie"></i>
+                    </div>
+                </div>
+                <h3>{{ total_job_seekers }}</h3>
+                <p>Job Seekers</p>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-top">
+                    <div class="stat-icon green-bg">
+                        <i class="fa-solid fa-building-user"></i>
+                    </div>
+                </div>
+                <h3>{{ total_recruiters }}</h3>
+                <p>Recruiters</p>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-top">
+                    <div class="stat-icon orange-bg">
+                        <i class="fa-solid fa-briefcase"></i>
+                    </div>
+                </div>
+                <h3>{{ total_jobs }}</h3>
+                <p>Total Jobs</p>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-top">
+                    <div class="stat-icon pink-bg">
+                        <i class="fa-solid fa-file-circle-check"></i>
+                    </div>
+                </div>
+                <h3>{{ total_applications }}</h3>
+                <p>Applications</p>
+            </div>
+
+        </div>
+
+        <!-- ANALYTICS CHARTS -->
+        <div class="analytics-grid mt-4">
+
+            <div class="analytics-card">
+                <h5>
+                    <i class="fa-solid fa-chart-column me-2" style="color:#4267d5;"></i>
+                    Applications by Job
+                </h5>
+
+                <div class="chart-container">
+                    <canvas id="jobApplicationsChart"></canvas>
+                </div>
+            </div>
+
+            <div class="analytics-card">
+                <h5>
+                    <i class="fa-solid fa-chart-pie me-2" style="color:#8051d5;"></i>
+                    Application Status Distribution
+                </h5>
+
+                <div class="chart-container">
+                    <canvas id="applicationStatusChart"></canvas>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- APPLICATION STATUS SUMMARY -->
+        <div class="analytics-card mt-4">
+
+            <h5>
+                <i class="fa-solid fa-list-check me-2" style="color:#4267d5;"></i>
+                Application Status Summary
+            </h5>
+
+            <div class="status-summary">
+
+                <div class="status-box">
+                    <h4 style="color:#3498db;">{{ pending_count }}</h4>
+                    <p>Pending</p>
+                </div>
+
+                <div class="status-box">
+                    <h4 style="color:#d94e80;">{{ shortlisted_count }}</h4>
+                    <p>Shortlisted</p>
+                </div>
+
+                <div class="status-box">
+                    <h4 style="color:#20a36b;">{{ selected_count }}</h4>
+                    <p>Selected</p>
+                </div>
+
+                <div class="status-box">
+                    <h4 style="color:#e46c55;">{{ rejected_count }}</h4>
+                    <p>Rejected</p>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- RECENT APPLICATIONS -->
+        <div class="analytics-card mt-4">
+
+            <h5>
+                <i class="fa-solid fa-clock-rotate-left me-2" style="color:#4267d5;"></i>
+                Recent Applications
+            </h5>
+
+            <div class="table-responsive">
+
+                <table class="table align-middle">
+
+                    <thead class="table-light">
+                        <tr>
+                            <th>Applicant</th>
+                            <th>Email</th>
+                            <th>Job Title</th>
+                            <th>Company</th>
+                            <th>Applied Date</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        {% for application in recent_applications %}
+
+                        <tr>
+                            <td>{{ application.applicant.full_name }}</td>
+                            <td>{{ application.applicant.email }}</td>
+                            <td>{{ application.job.job_title }}</td>
+                            <td>{{ application.job.company_name }}</td>
+
+                            <td>
+                                {% if application.applied_at %}
+                                    {{ application.applied_at.strftime('%d-%m-%Y') }}
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </td>
+
+                            <td>
+                                {% if application.status == 'Pending' %}
+                                    <span class="badge text-bg-primary">Pending</span>
+                                {% elif application.status == 'Shortlisted' %}
+                                    <span class="badge text-bg-info">Shortlisted</span>
+                                {% elif application.status == 'Selected' %}
+                                    <span class="badge text-bg-success">Selected</span>
+                                {% elif application.status == 'Rejected' %}
+                                    <span class="badge text-bg-danger">Rejected</span>
+                                {% else %}
+                                    <span class="badge text-bg-secondary">{{ application.status }}</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+
+                        {% else %}
+
+                        <tr>
+                            <td colspan="6" class="text-center text-muted">
+                                No applications available yet.
+                            </td>
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+
+    </section>
+
+    <!-- PLATFORM INFORMATION -->
+    <section id="platform-info">
+
+        <h3 class="section-title" style="margin-top:35px;">
+            <i class="fa-solid fa-circle-info me-2" style="color:#4267d5;"></i>
+            Platform Information
+        </h3>
+
+        <div class="quick-info">
+
+            <div class="info-row">
+                <span class="info-label">Platform Name</span>
+                <span class="info-value">SmartHire</span>
+            </div>
+
+            <div class="info-row">
+                <span class="info-label">Platform Type</span>
+                <span class="info-value">AI-Powered Job Portal</span>
+            </div>
+
+            <div class="info-row">
+                <span class="info-label">Logged-in Administrator</span>
+                <span class="info-value">{{ current_user.full_name }}</span>
+            </div>
+
+            <div class="info-row">
+                <span class="info-label">Account Role</span>
+                <span class="info-value">Administrator</span>
+            </div>
+
+            <div class="info-row">
+                <span class="info-label">Total Registered Companies</span>
+                <span class="info-value">{{ total_companies }}</span>
+            </div>
+
+        </div>
+    </section>
+
+    <footer class="footer">
+        © 2026 SmartHire | Admin Control Center
+        <br>
+        Securely manage your recruitment platform.
+    </footer>
+
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    // User search
+    const search = document.getElementById("userSearch");
+
+    if (search) {
+        search.addEventListener("input", function () {
+
+            const value = this.value.toLowerCase();
+
+            document.querySelectorAll("#userTableBody .user-row").forEach(function(row) {
+                row.style.display = row.innerText.toLowerCase().includes(value)
+                    ? ""
+                    : "none";
+            });
+        });
+    }
+
+    // Job-wise applications chart
+    const jobLabels = {{ job_labels | tojson }};
+    const applicationCounts = {{ application_counts | tojson }};
+
+    const jobChart = document.getElementById("jobApplicationsChart");
+
+    if (jobChart) {
+        new Chart(jobChart, {
+            type: "bar",
+            data: {
+                labels: jobLabels,
+                datasets: [{
+                    label: "Applications",
+                    data: applicationCounts,
+                    backgroundColor: "rgba(54, 153, 225, 0.55)",
+                    borderColor: "#3699e1",
+                    borderWidth: 1,
+                    borderRadius: 7
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: "top"
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            precision: 0
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    // Application status doughnut chart
+    const statusChart = document.getElementById("applicationStatusChart");
+
+    if (statusChart) {
+        new Chart(statusChart, {
+            type: "doughnut",
+            data: {
+                labels: ["Pending", "Shortlisted", "Selected", "Rejected"],
+                datasets: [{
+                    data: [
+                        {{ pending_count }},
+                        {{ shortlisted_count }},
+                        {{ selected_count }},
+                        {{ rejected_count }}
+                    ],
+                    backgroundColor: [
+                        "#36a2eb",
+                        "#ff6384",
+                        "#ff9f40",
+                        "#ffcd56"
+                    ],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: "bottom"
+                    }
+                }
+            }
+        });
+    }
+
+});
+</script>
+
+</body>
+</html>

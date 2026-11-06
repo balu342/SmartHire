@@ -1,0 +1,452 @@
+
+{% extends "base.html" %}
+
+{% block title %}Resume Management - SmartHire{% endblock %}
+
+{% block content %}
+
+<style>
+    .resume-page {
+        background: #f2f8fd;
+        min-height: 100vh;
+        padding: 45px 15px 65px;
+        font-family: 'Inter', sans-serif;
+    }
+
+    .resume-heading {
+        text-align: center;
+        margin-bottom: 32px;
+    }
+
+    .resume-heading h2 {
+        color: #164b78;
+        font-size: 32px;
+        font-weight: 800;
+    }
+
+    .resume-heading p {
+        color: #7d94a9;
+        font-size: 14px;
+        margin-top: 9px;
+    }
+
+    .resume-banner {
+        max-width: 950px;
+        margin: 0 auto 28px;
+        padding: 28px 32px;
+        background: linear-gradient(115deg, #12558d, #198bc7, #51b7e4);
+        border-radius: 20px;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        box-shadow: 0 12px 28px rgba(25, 139, 199, .16);
+    }
+
+    .resume-banner h4 {
+        font-weight: 800;
+        margin-bottom: 8px;
+    }
+
+    .resume-banner p {
+        color: #e1f4ff;
+        font-size: 14px;
+        line-height: 1.7;
+        margin: 0;
+    }
+
+    .resume-banner i {
+        font-size: 55px;
+        color: #d0efff;
+    }
+
+    .resume-card {
+        max-width: 950px;
+        margin: auto;
+        background: white;
+        border: 1px solid #e1edf6;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 10px 35px rgba(20, 75, 115, .07);
+    }
+
+    .resume-card-header {
+        background: #f8fbff;
+        border-bottom: 1px solid #e7f0f7;
+        padding: 23px 30px;
+    }
+
+    .resume-card-header h5 {
+        color: #194e7a;
+        font-weight: 800;
+        margin: 0;
+    }
+
+    .resume-card-body {
+        padding: 32px;
+    }
+
+    .upload-area {
+        background: #f6fbff;
+        border: 2px dashed #a8cfe9;
+        border-radius: 17px;
+        padding: 35px 25px;
+        text-align: center;
+        transition: .3s;
+    }
+
+    .upload-area:hover {
+        background: #edf8ff;
+        border-color: #258fc7;
+    }
+
+    .upload-icon {
+        width: 75px;
+        height: 75px;
+        background: #e1f3ff;
+        color: #1685bd;
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 18px;
+        font-size: 34px;
+    }
+
+    .upload-area h4 {
+        color: #194e7a;
+        font-size: 20px;
+        font-weight: 800;
+    }
+
+    .upload-area p {
+        color: #8298aa;
+        font-size: 13px;
+    }
+
+    .resume-page .form-label {
+        color: #365e7c;
+        font-size: 13px;
+        font-weight: 700;
+        margin-bottom: 10px;
+    }
+
+    .resume-page .form-control {
+        border: 1px solid #dce9f3;
+        border-radius: 10px;
+        padding: 12px;
+        font-size: 13px;
+        background: #fbfdff;
+    }
+
+    .resume-page .form-control:focus {
+        border-color: #2694ca;
+        box-shadow: 0 0 0 3px rgba(38, 148, 202, .11);
+    }
+
+    .upload-btn {
+        width: 100%;
+        padding: 14px;
+        border: none;
+        border-radius: 10px;
+        background: linear-gradient(110deg, #14558a, #198bc7);
+        color: white;
+        font-weight: 700;
+        font-size: 14px;
+        box-shadow: 0 7px 18px rgba(25, 139, 199, .16);
+        transition: .3s;
+    }
+
+    .upload-btn:hover {
+        background: linear-gradient(110deg, #103f6a, #126da5);
+        transform: translateY(-2px);
+    }
+
+    .file-guidelines {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 18px;
+        margin-top: 17px;
+        color: #8097aa;
+        font-size: 12px;
+    }
+
+    .file-guidelines i {
+        color: #1689bd;
+        margin-right: 5px;
+    }
+
+    .uploaded-section {
+        border-top: 1px solid #e8f0f7;
+        margin-top: 32px;
+        padding-top: 27px;
+    }
+
+    .uploaded-title {
+        color: #194e7a;
+        font-size: 18px;
+        font-weight: 800;
+        margin-bottom: 20px;
+    }
+
+    .resume-item {
+        border: 1px solid #e1edf6;
+        border-radius: 13px;
+        padding: 17px;
+        margin-bottom: 13px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+        transition: .3s;
+    }
+
+    .resume-item:hover {
+        border-color: #9dcce8;
+        background: #f8fcff;
+        transform: translateY(-2px);
+    }
+
+    .resume-file-icon {
+        width: 46px;
+        height: 46px;
+        border-radius: 12px;
+        background: #fff0ef;
+        color: #e04b4b;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 21px;
+        flex-shrink: 0;
+    }
+
+    .resume-file-name {
+        color: #285475;
+        font-size: 13px;
+        font-weight: 700;
+        word-break: break-word;
+    }
+
+    .resume-date {
+        color: #8a9eae;
+        font-size: 11px;
+        margin-top: 5px;
+    }
+
+    .view-btn {
+        display: inline-block;
+        text-decoration: none;
+        color: #167eb5;
+        border: 1px solid #b8d9ed;
+        background: #f0f9ff;
+        border-radius: 8px;
+        padding: 9px 13px;
+        font-size: 12px;
+        font-weight: 700;
+        white-space: nowrap;
+        transition: .3s;
+    }
+
+    .view-btn:hover {
+        background: #167eb5;
+        color: white;
+    }
+
+    .empty-state {
+        text-align: center;
+        background: #f5faff;
+        border: 1px dashed #c6ddec;
+        border-radius: 14px;
+        padding: 28px 15px;
+        color: #7c94a8;
+        font-size: 13px;
+    }
+
+    .empty-state i {
+        font-size: 32px;
+        color: #65a9d2;
+        margin-bottom: 12px;
+    }
+
+    @media(max-width: 600px) {
+        .resume-page {
+            padding: 30px 12px 45px;
+        }
+
+        .resume-heading h2 {
+            font-size: 26px;
+        }
+
+        .resume-banner {
+            padding: 22px;
+        }
+
+        .resume-banner i {
+            font-size: 38px;
+        }
+
+        .resume-card-body {
+            padding: 20px;
+        }
+
+        .resume-item {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+    }
+</style>
+
+<div class="resume-page">
+
+    <!-- Heading -->
+    <div class="resume-heading">
+        <h2>Resume Management</h2>
+        <p>Upload, organize, and access your professional resume.</p>
+    </div>
+
+    <!-- Banner -->
+    <div class="resume-banner">
+        <div>
+            <h4>Make Your First Impression Count!</h4>
+            <p>
+                Keep your resume updated and ready for your next career opportunity.
+                Let recruiters discover your professional potential.
+            </p>
+        </div>
+
+        <i class="fa-solid fa-file-circle-check"></i>
+    </div>
+
+    <!-- Main Card -->
+    <div class="resume-card">
+
+        <div class="resume-card-header">
+            <h5>
+                <i class="fa-solid fa-cloud-arrow-up me-2"></i>
+                Upload Your Resume
+            </h5>
+        </div>
+
+        <div class="resume-card-body">
+
+            <form method="POST"
+                  action="{{ url_for('resume') }}"
+                  enctype="multipart/form-data">
+
+                <div class="upload-area">
+
+                    <div class="upload-icon">
+                        <i class="fa-solid fa-file-pdf"></i>
+                    </div>
+
+                    <h4>Upload Your Professional Resume</h4>
+
+                    <p>
+                        Select your latest resume in PDF format.
+                        Make sure your document is clear and up to date.
+                    </p>
+
+                    <div class="text-start mt-4">
+
+                        <label class="form-label">
+                            Choose Resume (PDF)
+                        </label>
+
+                        <input type="file"
+                               name="resume"
+                               class="form-control"
+                               accept=".pdf,application/pdf"
+                               required>
+
+                    </div>
+
+                    <div class="file-guidelines">
+                        <span>
+                            <i class="fa-solid fa-file-pdf"></i> PDF only
+                        </span>
+                        <span>
+                            <i class="fa-solid fa-weight-hanging"></i> Maximum 5 MB
+                        </span>
+                        <span>
+                            <i class="fa-solid fa-shield-halved"></i> Secure upload
+                        </span>
+                    </div>
+
+                </div>
+
+                <button type="submit" class="upload-btn mt-4">
+                    <i class="fa-solid fa-cloud-arrow-up me-2"></i>
+                    Upload Resume
+                </button>
+
+            </form>
+
+            <!-- Uploaded Resumes -->
+            <div class="uploaded-section">
+
+                <h5 class="uploaded-title">
+                    <i class="fa-solid fa-folder-open me-2"></i>
+                    My Uploaded Resumes
+                </h5>
+
+                {% if resumes %}
+
+                    {% for item in resumes %}
+
+                        <div class="resume-item">
+
+                            <div class="d-flex align-items-center gap-3">
+
+                                <div class="resume-file-icon">
+                                    <i class="fa-solid fa-file-pdf"></i>
+                                </div>
+
+                                <div>
+                                    <div class="resume-file-name">
+                                        {{ item.file_name }}
+                                    </div>
+
+                                    <div class="resume-date">
+                                        <i class="fa-regular fa-clock me-1"></i>
+                                        Uploaded:
+                                        {{ item.uploaded_at.strftime('%d-%m-%Y %H:%M') }}
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <a href="{{ url_for('view_resume', resume_id=item.id) }}"
+                               target="_blank"
+                               class="view-btn">
+
+                                <i class="fa-solid fa-eye me-1"></i>
+                                View Resume
+
+                            </a>
+
+                        </div>
+
+                    {% endfor %}
+
+                {% else %}
+
+                    <div class="empty-state">
+                        <i class="fa-solid fa-folder-open d-block"></i>
+                        <strong>No resumes uploaded yet.</strong>
+                        <p class="mb-0 mt-2">
+                            Upload your first resume to get started.
+                        </p>
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

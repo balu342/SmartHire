@@ -1,0 +1,239 @@
+
+{% extends "base.html" %}
+
+{% block title %}Company Profile | SmartHire{% endblock %}
+
+{% block extra_css %}
+<style>
+    .company-page {
+        max-width: 1100px;
+        margin: 45px auto;
+        padding: 0 18px;
+    }
+
+    .company-hero {
+        background: linear-gradient(120deg, #065f46, #059669, #10b981);
+        color: white;
+        padding: 42px;
+        border-radius: 22px;
+        margin-bottom: 30px;
+        box-shadow: 0 12px 30px rgba(5, 150, 105, 0.18);
+    }
+
+    .company-hero h1 {
+        font-size: 32px;
+        font-weight: 800;
+        margin-bottom: 10px;
+    }
+
+    .company-hero p {
+        margin: 0;
+        font-size: 16px;
+        opacity: 0.95;
+    }
+
+    .company-form-card {
+        background: white;
+        padding: 35px;
+        border-radius: 20px;
+        border: 1px solid #e5eee9;
+        box-shadow: 0 10px 30px rgba(20, 80, 55, 0.07);
+    }
+
+    .section-heading {
+        color: #065f46;
+        font-size: 21px;
+        font-weight: 750;
+        margin-bottom: 25px;
+    }
+
+    .form-label {
+        color: #263b33;
+        font-weight: 650;
+        margin-bottom: 9px;
+    }
+
+    .form-control,
+    .form-select {
+        padding: 13px 15px;
+        border: 1px solid #dce9e2;
+        border-radius: 11px;
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+        border-color: #059669;
+        box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.12);
+    }
+
+    textarea.form-control {
+        min-height: 150px;
+        resize: vertical;
+    }
+
+    .save-company-btn {
+        background: linear-gradient(120deg, #047857, #10b981);
+        color: white;
+        border: none;
+        border-radius: 11px;
+        padding: 13px 28px;
+        font-weight: 700;
+        transition: 0.3s;
+    }
+
+    .save-company-btn:hover {
+        background: linear-gradient(120deg, #065f46, #059669);
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 7px 18px rgba(5, 150, 105, 0.2);
+    }
+
+    .company-note {
+        background: #ecfdf5;
+        border: 1px solid #bbf7d0;
+        color: #166534;
+        padding: 15px;
+        border-radius: 12px;
+        margin-bottom: 25px;
+    }
+
+    @media (max-width: 768px) {
+        .company-hero {
+            padding: 28px 22px;
+        }
+
+        .company-hero h1 {
+            font-size: 25px;
+        }
+
+        .company-form-card {
+            padding: 22px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="company-page">
+
+    <!-- PAGE HEADER -->
+    <div class="company-hero">
+        <h1>
+            <i class="fa-solid fa-building me-2"></i>
+            Company Profile
+        </h1>
+        <p>Create your company identity and help candidates learn more about your organization.</p>
+    </div>
+
+    <!-- COMPANY FORM -->
+    <div class="company-form-card">
+
+        <div class="company-note">
+            <i class="fa-solid fa-circle-info me-2"></i>
+            Complete your company information to build trust with job seekers.
+        </div>
+
+        <h4 class="section-heading">
+            <i class="fa-solid fa-briefcase me-2"></i>
+            Company Information
+        </h4>
+
+        <form method="POST" action="{{ url_for('company_profile') }}">
+
+            <div class="row g-4">
+
+                <!-- COMPANY NAME -->
+                <div class="col-md-6">
+                    <label class="form-label">Company Name *</label>
+                    <input type="text"
+                           name="company_name"
+                           class="form-control"
+                           placeholder="Enter company name"
+                           value="{{ company.company_name if company else '' }}"
+                           required>
+                </div>
+
+                <!-- INDUSTRY -->
+                <div class="col-md-6">
+                    <label class="form-label">Industry</label>
+                    <input type="text"
+                           name="industry"
+                           class="form-control"
+                           placeholder="Example: IT, Healthcare, Finance"
+                           value="{{ company.industry if company else '' }}">
+                </div>
+
+                <!-- WEBSITE -->
+                <div class="col-md-6">
+                    <label class="form-label">Company Website</label>
+                    <input type="url"
+                           name="website"
+                           class="form-control"
+                           placeholder="https://www.example.com"
+                           value="{{ company.website if company else '' }}">
+                </div>
+
+                <!-- COMPANY SIZE -->
+                <div class="col-md-6">
+                    <label class="form-label">Company Size</label>
+                    <select name="company_size" class="form-select">
+                        <option value="">Select company size</option>
+                        {% for size in [
+                            '1-10 Employees',
+                            '11-50 Employees',
+                            '51-200 Employees',
+                            '201-500 Employees',
+                            '501-1000 Employees',
+                            '1000+ Employees'
+                        ] %}
+                            <option value="{{ size }}"
+                                {% if company and company.company_size == size %}selected{% endif %}>
+                                {{ size }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- LOCATION -->
+                <div class="col-12">
+                    <label class="form-label">Company Location</label>
+                    <input type="text"
+                           name="location"
+                           class="form-control"
+                           placeholder="Enter company location"
+                           value="{{ company.location if company else '' }}">
+                </div>
+
+                <!-- DESCRIPTION -->
+                <div class="col-12">
+                    <label class="form-label">About Company</label>
+                    <textarea name="description"
+                              class="form-control"
+                              placeholder="Write about your company, services, culture and mission...">{{ company.description if company else '' }}</textarea>
+                </div>
+
+            </div>
+
+            <!-- BUTTONS -->
+            <div class="d-flex flex-wrap gap-3 mt-4">
+
+                <button type="submit" class="btn save-company-btn">
+                    <i class="fa-solid fa-floppy-disk me-2"></i>
+                    Save Company Profile
+                </button>
+
+                <a href="{{ url_for('home') }}" class="btn btn-light border rounded-3 px-4 py-3">
+                    <i class="fa-solid fa-arrow-left me-2"></i>
+                    Back to Home
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

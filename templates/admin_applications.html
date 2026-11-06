@@ -1,0 +1,397 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    .admin-applications {
+        max-width: 1450px;
+        margin: 35px auto;
+        padding: 25px;
+    }
+
+    .applications-header {
+        background: linear-gradient(135deg, #101c3a, #174a85);
+        color: white;
+        padding: 30px;
+        border-radius: 18px;
+        margin-bottom: 25px;
+        box-shadow: 0 8px 25px rgba(0,0,0,.12);
+    }
+
+    .applications-header h2 {
+        font-weight: 700;
+        margin-bottom: 8px;
+    }
+
+    .applications-header p {
+        color: #d5e5ff;
+        margin: 0;
+    }
+
+    .application-stat {
+        background: white;
+        padding: 22px;
+        border-radius: 15px;
+        box-shadow: 0 4px 18px rgba(0,0,0,.06);
+        margin-bottom: 22px;
+    }
+
+    .application-stat h3 {
+        color: #174a85;
+        font-weight: 700;
+        margin: 0;
+    }
+
+    .application-stat p {
+        color: #777;
+        margin: 5px 0 0;
+    }
+
+    .applications-toolbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 15px;
+        flex-wrap: wrap;
+        margin-bottom: 20px;
+    }
+
+    .application-search {
+        max-width: 420px;
+        width: 100%;
+        padding: 12px 15px;
+        border: 1px solid #dce3ed;
+        border-radius: 10px;
+        outline: none;
+    }
+
+    .application-search:focus {
+        border-color: #2878d0;
+        box-shadow: 0 0 0 3px rgba(40,120,208,.12);
+    }
+
+    .applications-table-card {
+        background: white;
+        padding: 20px;
+        border-radius: 16px;
+        box-shadow: 0 4px 20px rgba(0,0,0,.06);
+        overflow-x: auto;
+    }
+
+    .applications-table {
+        width: 100%;
+        min-width: 1100px;
+        border-collapse: collapse;
+    }
+
+    .applications-table th {
+        background: #f3f6fb;
+        color: #34445e;
+        padding: 15px;
+        text-align: left;
+        font-size: 13px;
+        white-space: nowrap;
+    }
+
+    .applications-table td {
+        padding: 16px 15px;
+        border-bottom: 1px solid #edf0f5;
+        color: #4b5563;
+        font-size: 14px;
+        vertical-align: middle;
+    }
+
+    .applications-table tr:hover {
+        background: #f9fbff;
+    }
+
+    .applicant-name,
+    .applied-job {
+        color: #172b4d;
+        font-weight: 700;
+    }
+
+    .secondary-text {
+        color: #778196;
+        font-size: 12px;
+        margin-top: 4px;
+    }
+
+    .status-select {
+        min-width: 125px;
+        padding: 8px;
+        border: 1px solid #dce3ed;
+        border-radius: 8px;
+        font-size: 13px;
+    }
+
+    .update-btn {
+        background: #174a85;
+        color: white;
+        border: none;
+        padding: 8px 12px;
+        border-radius: 8px;
+        font-size: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        margin-top: 6px;
+    }
+
+    .update-btn:hover {
+        background: #0f3563;
+    }
+
+    .cover-btn {
+        background: #e8f2ff;
+        color: #1764ae;
+        border: none;
+        padding: 8px 11px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    .cover-letter-text {
+        display: none;
+        max-width: 260px;
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+        margin-top: 8px;
+        color: #596579;
+        font-size: 12px;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 55px 20px;
+        color: #778196;
+    }
+
+    .empty-state i {
+        font-size: 45px;
+        color: #aab8ca;
+        margin-bottom: 15px;
+    }
+
+    @media(max-width:768px) {
+        .admin-applications {
+            padding: 12px;
+        }
+
+        .applications-header {
+            padding: 22px;
+        }
+    }
+</style>
+
+<div class="admin-applications">
+
+    <div class="applications-header">
+        <h2>
+            <i class="fa-solid fa-file-circle-check"></i>
+            Admin Application Management
+        </h2>
+        <p>Monitor and manage job applications across the SmartHire platform.</p>
+    </div>
+
+    <div class="application-stat">
+        <h3>{{ total_applications }}</h3>
+        <p>
+            <i class="fa-solid fa-file-lines"></i>
+            Total Applications
+        </p>
+    </div>
+
+    <div class="applications-toolbar">
+        <div>
+            <h4 class="fw-bold mb-1">All Applications</h4>
+            <p class="text-muted mb-0">
+                Review applicant details and update application statuses.
+            </p>
+        </div>
+
+        <input
+            type="text"
+            id="applicationSearch"
+            class="application-search"
+            placeholder="Search applicant, job or company..."
+            onkeyup="filterApplications()"
+        >
+    </div>
+
+    <div class="applications-table-card">
+
+        {% if applications %}
+
+        <table class="applications-table" id="applicationsTable">
+
+            <thead>
+                <tr>
+                    <th>APPLICANT</th>
+                    <th>JOB DETAILS</th>
+                    <th>COMPANY</th>
+                    <th>APPLIED DATE</th>
+                    <th>COVER LETTER</th>
+                    <th>APPLICATION STATUS</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for application in applications %}
+
+                <tr>
+                    <td>
+                        {% if application.applicant %}
+                            <div class="applicant-name">
+                                {{ application.applicant.full_name }}
+                            </div>
+                            <div class="secondary-text">
+                                {{ application.applicant.email }}
+                            </div>
+                        {% else %}
+                            Unknown applicant
+                        {% endif %}
+                    </td>
+
+                    <td>
+                        {% if application.job %}
+                            <div class="applied-job">
+                                {{ application.job.job_title }}
+                            </div>
+                            <div class="secondary-text">
+                                {{ application.job.location }}
+                            </div>
+                        {% else %}
+                            Job unavailable
+                        {% endif %}
+                    </td>
+
+                    <td>
+                        {% if application.job %}
+                            {{ application.job.company_name }}
+                        {% else %}
+                            Not available
+                        {% endif %}
+                    </td>
+
+                    <td>
+                        {% if application.applied_at %}
+                            {{ application.applied_at.strftime('%d %b %Y') }}
+                        {% else %}
+                            Not available
+                        {% endif %}
+                    </td>
+
+                    <td>
+                        {% if application.cover_letter %}
+                            <button
+                                type="button"
+                                class="cover-btn"
+                                onclick="toggleCoverLetter('cover-{{ application.id }}')"
+                            >
+                                <i class="fa-solid fa-eye"></i> View
+                            </button>
+
+                            <div
+                                class="cover-letter-text"
+                                id="cover-{{ application.id }}"
+                            >{{ application.cover_letter }}</div>
+                        {% else %}
+                            <span class="text-muted">Not provided</span>
+                        {% endif %}
+                    </td>
+
+                    <td>
+                        <form
+                            method="POST"
+                            action="{{ url_for('admin_update_application', application_id=application.id) }}"
+                        >
+                            <select
+                                name="status"
+                                class="status-select"
+                                required
+                            >
+                                {% for status in ['Pending', 'Reviewed', 'Shortlisted', 'Rejected', 'Accepted'] %}
+                                <option
+                                    value="{{ status }}"
+                                    {% if application.status == status %}selected{% endif %}
+                                >
+                                    {{ status }}
+                                </option>
+                                {% endfor %}
+                            </select>
+
+                            <br>
+
+                            <button type="submit" class="update-btn">
+                                <i class="fa-solid fa-check"></i>
+                                Update
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+
+                {% endfor %}
+            </tbody>
+        </table>
+
+        {% else %}
+
+        <div class="empty-state">
+            <i class="fa-solid fa-folder-open"></i>
+            <h5>No Applications Found</h5>
+            <p>There are currently no job applications on the platform.</p>
+        </div>
+
+        {% endif %}
+
+        <p
+            id="noApplicationResults"
+            class="text-center text-muted mt-4"
+            style="display:none;"
+        >
+            No matching applications found.
+        </p>
+
+    </div>
+</div>
+
+<script>
+function filterApplications() {
+    const input = document.getElementById("applicationSearch");
+    const filter = input.value.toLowerCase();
+    const table = document.getElementById("applicationsTable");
+    const noResults = document.getElementById("noApplicationResults");
+
+    if (!table) return;
+
+    const rows = table.querySelectorAll("tbody tr");
+    let visibleCount = 0;
+
+    rows.forEach(row => {
+        const text = row.innerText.toLowerCase();
+
+        if (text.includes(filter)) {
+            row.style.display = "";
+            visibleCount++;
+        } else {
+            row.style.display = "none";
+        }
+    });
+
+    noResults.style.display =
+        visibleCount === 0 ? "block" : "none";
+}
+
+function toggleCoverLetter(id) {
+    const element = document.getElementById(id);
+
+    if (element) {
+        element.style.display =
+            element.style.display === "block" ? "none" : "block";
+    }
+}
+</script>
+
+{% endblock %}

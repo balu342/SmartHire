@@ -1,0 +1,329 @@
+
+{% extends "base.html" %}
+
+{% block title %}Candidate Search | SmartHire{% endblock %}
+
+{% block content %}
+
+<style>
+    .candidate-page {
+        max-width: 1250px;
+        margin: 40px auto;
+        padding: 20px;
+    }
+
+    .candidate-header {
+        background: linear-gradient(120deg, #064e3b, #059669, #10b981);
+        color: white;
+        padding: 35px;
+        border-radius: 18px;
+        margin-bottom: 28px;
+    }
+
+    .search-panel {
+        background: white;
+        padding: 25px;
+        border-radius: 16px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+        margin-bottom: 28px;
+    }
+
+    .search-panel label {
+        font-weight: 600;
+        color: #374151;
+        margin-bottom: 8px;
+    }
+
+    .search-btn {
+        background: linear-gradient(120deg, #047857, #10b981);
+        color: white;
+        border: none;
+        border-radius: 10px;
+        padding: 12px 22px;
+        font-weight: 600;
+    }
+
+    .search-btn:hover {
+        background: #065f46;
+        color: white;
+    }
+
+    .reset-btn {
+        background: #e5e7eb;
+        color: #374151;
+        border-radius: 10px;
+        padding: 12px 20px;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .candidate-card {
+        background: white;
+        border: 1px solid #e5e7eb;
+        border-radius: 16px;
+        padding: 24px;
+        margin-bottom: 18px;
+        box-shadow: 0 5px 18px rgba(0,0,0,0.04);
+        transition: 0.3s;
+    }
+
+    .candidate-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    }
+
+    .candidate-avatar {
+        width: 55px;
+        height: 55px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #059669, #34d399);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 23px;
+        font-weight: 700;
+    }
+
+    .candidate-name {
+        color: #064e3b;
+        font-size: 19px;
+        font-weight: 700;
+    }
+
+    .candidate-headline {
+        color: #6b7280;
+        font-size: 14px;
+    }
+
+    .candidate-info {
+        color: #4b5563;
+        font-size: 14px;
+        margin-top: 12px;
+    }
+
+    .candidate-info i {
+        color: #059669;
+        width: 20px;
+    }
+
+    .skill-tag {
+        display: inline-block;
+        background: #d1fae5;
+        color: #065f46;
+        padding: 6px 11px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        margin: 4px 3px 0 0;
+    }
+
+    .section-label {
+        color: #064e3b;
+        font-weight: 700;
+        margin-top: 18px;
+        margin-bottom: 8px;
+    }
+
+    .empty-state {
+        background: white;
+        border-radius: 16px;
+        padding: 55px 20px;
+        text-align: center;
+        color: #6b7280;
+    }
+
+    @media(max-width: 768px) {
+        .candidate-header {
+            padding: 25px;
+        }
+
+        .search-panel {
+            padding: 18px;
+        }
+    }
+</style>
+
+<div class="candidate-page">
+
+    <!-- PAGE HEADER -->
+    <div class="candidate-header">
+        <h2 class="fw-bold">
+            <i class="fas fa-users"></i> Candidate Search
+        </h2>
+
+        <p class="mb-0">
+            Discover talented candidates and find the right people for your jobs.
+        </p>
+    </div>
+
+    <!-- SEARCH FILTERS -->
+    <div class="search-panel">
+
+        <h5 class="fw-bold mb-4">
+            <i class="fas fa-filter text-success"></i>
+            Search and Filter Candidates
+        </h5>
+
+        <form method="GET" action="{{ url_for('candidate_search') }}">
+
+            <div class="row g-3">
+
+                <div class="col-md-4">
+                    <label>Candidate Name or Email</label>
+                    <input type="text"
+                           name="search"
+                           class="form-control"
+                           placeholder="Search by name or email"
+                           value="{{ search }}">
+                </div>
+
+                <div class="col-md-4">
+                    <label>Skills</label>
+                    <input type="text"
+                           name="skill"
+                           class="form-control"
+                           placeholder="Example: Python, Java, SQL"
+                           value="{{ skill }}">
+                </div>
+
+                <div class="col-md-4">
+                    <label>Location</label>
+                    <input type="text"
+                           name="location"
+                           class="form-control"
+                           placeholder="Enter candidate location"
+                           value="{{ location }}">
+                </div>
+
+                <div class="col-12 d-flex gap-2 flex-wrap mt-4">
+
+                    <button type="submit" class="search-btn">
+                        <i class="fas fa-search"></i> Search Candidates
+                    </button>
+
+                    <a href="{{ url_for('candidate_search') }}" class="reset-btn">
+                        <i class="fas fa-rotate-left"></i> Reset Filters
+                    </a>
+
+                </div>
+
+            </div>
+        </form>
+    </div>
+
+    <!-- SEARCH RESULTS -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5 class="fw-bold">
+            Candidate Results
+        </h5>
+
+        <span class="badge bg-success rounded-pill px-3 py-2">
+            {{ candidates|length }} Candidates Found
+        </span>
+    </div>
+
+    {% if candidates %}
+
+        {% for candidate in candidates %}
+
+            <div class="candidate-card">
+
+                <div class="d-flex align-items-center gap-3">
+
+                    <div class="candidate-avatar">
+                        {{ candidate.full_name[0]|upper }}
+                    </div>
+
+                    <div>
+                        <div class="candidate-name">
+                            {{ candidate.full_name }}
+                        </div>
+
+                        <div class="candidate-headline">
+                            {{ candidate.profile.headline or "Job Seeker" }}
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row mt-3">
+
+                    <div class="col-md-6">
+
+                        <div class="candidate-info">
+                            <i class="fas fa-envelope"></i>
+                            {{ candidate.email }}
+                        </div>
+
+                        <div class="candidate-info">
+                            <i class="fas fa-location-dot"></i>
+                            {{ candidate.profile.location or "Location not provided" }}
+                        </div>
+
+                        <div class="candidate-info">
+                            <i class="fas fa-phone"></i>
+                            {{ candidate.profile.phone or "Phone not provided" }}
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <div class="section-label">
+                            <i class="fas fa-graduation-cap"></i> Education
+                        </div>
+
+                        <p class="text-secondary small">
+                            {{ candidate.profile.education or "Education details not provided" }}
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <div class="section-label">
+                    <i class="fas fa-code"></i> Skills
+                </div>
+
+                {% if candidate.profile.skills %}
+
+                    {% for candidate_skill in candidate.profile.skills.replace(',', '\n').splitlines() %}
+                        {% if candidate_skill.strip() %}
+                            <span class="skill-tag">
+                                {{ candidate_skill.strip() }}
+                            </span>
+                        {% endif %}
+                    {% endfor %}
+
+                {% else %}
+
+                    <span class="text-muted small">No skills added yet.</span>
+
+                {% endif %}
+
+                <div class="section-label">
+                    <i class="fas fa-briefcase"></i> Experience
+                </div>
+
+                <p class="text-secondary small mb-0">
+                    {{ candidate.profile.experience or "Experience details not provided" }}
+                </p>
+
+            </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <div class="empty-state">
+            <i class="fas fa-user-slash fa-3x mb-3"></i>
+            <h4>No Candidates Found</h4>
+            <p>Try changing your search terms or filters.</p>
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

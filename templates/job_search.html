@@ -1,0 +1,222 @@
+
+{% extends "base.html" %}
+
+{% block title %}Find Jobs | SmartHire{% endblock %}
+
+{% block content %}
+
+<style>
+    body {
+        background: #f4f6ff;
+    }
+
+    .search-hero {
+        background: linear-gradient(120deg, #2563eb, #7054f7);
+        color: white;
+        padding: 45px;
+        border-radius: 22px;
+        margin-top: 35px;
+        box-shadow: 0 15px 35px rgba(65, 85, 220, 0.2);
+    }
+
+    .search-box {
+        background: white;
+        padding: 25px;
+        border-radius: 16px;
+        margin-top: 30px;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+    }
+
+    .job-card {
+        background: white;
+        border: 1px solid #edf0f7;
+        padding: 25px;
+        border-radius: 18px;
+        margin-bottom: 20px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.04);
+        transition: 0.3s;
+    }
+
+    .job-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 28px rgba(0,0,0,0.09);
+    }
+
+    .company-icon {
+        width: 55px;
+        height: 55px;
+        background: #eef2ff;
+        color: #4f46e5;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 23px;
+    }
+
+    .job-meta {
+        color: #64748b;
+        font-size: 14px;
+    }
+
+    .job-type {
+        background: #eef2ff;
+        color: #4f46e5;
+        padding: 7px 13px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    .search-btn {
+        background: linear-gradient(120deg, #2563eb, #7054f7);
+        color: white;
+        border: none;
+        padding: 12px 25px;
+        border-radius: 10px;
+        font-weight: 600;
+    }
+
+    .search-btn:hover {
+        color: white;
+        opacity: 0.9;
+    }
+
+    .empty-state {
+        background: white;
+        padding: 55px 20px;
+        border-radius: 18px;
+        text-align: center;
+    }
+</style>
+
+<div class="container pb-5">
+
+    <section class="search-hero">
+        <h1 class="fw-bold">Find Your Dream Job</h1>
+        <p class="mb-0">Discover opportunities that match your skills and career goals.</p>
+    </section>
+
+    <form method="GET" action="{{ url_for('job_search') }}" class="search-box">
+        <div class="row g-3">
+
+            <div class="col-lg-5">
+                <label class="form-label fw-semibold">Job Title / Company / Skills</label>
+                <input type="text" name="search" class="form-control"
+                       placeholder="e.g. Python Developer"
+                       value="{{ search_query }}">
+            </div>
+
+            <div class="col-lg-3">
+                <label class="form-label fw-semibold">Location</label>
+                <input type="text" name="location" class="form-control"
+                       placeholder="e.g. Bengaluru"
+                       value="{{ location }}">
+            </div>
+
+            <div class="col-lg-2">
+                <label class="form-label fw-semibold">Job Type</label>
+                <select name="job_type" class="form-select">
+                    <option value="">All Types</option>
+                    {% for type in ["Full-time", "Part-time", "Internship", "Contract"] %}
+                    <option value="{{ type }}" {% if selected_job_type == type %}selected{% endif %}>
+                        {{ type }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="col-lg-2 d-flex align-items-end">
+                <button type="submit" class="search-btn w-100">
+                    <i class="fa-solid fa-magnifying-glass"></i> Search
+                </button>
+            </div>
+
+        </div>
+    </form>
+
+    <div class="d-flex justify-content-between align-items-center mt-5 mb-4">
+        <div>
+            <h3 class="fw-bold mb-1">Latest Job Opportunities</h3>
+            <p class="text-secondary mb-0">{{ jobs|length }} jobs found</p>
+        </div>
+    </div>
+
+    {% if jobs %}
+        {% for job in jobs %}
+        <div class="job-card">
+
+            <div class="d-flex flex-column flex-md-row justify-content-between gap-3">
+
+                <div class="d-flex gap-3">
+                    <div class="company-icon">
+                        <i class="fa-solid fa-building"></i>
+                    </div>
+
+                    <div>
+                        <h5 class="fw-bold mb-1">{{ job.job_title }}</h5>
+                        <p class="text-primary fw-semibold mb-2">{{ job.company_name }}</p>
+
+                        <div class="job-meta d-flex flex-wrap gap-3">
+                            <span><i class="fa-solid fa-location-dot"></i> {{ job.location }}</span>
+                            <span><i class="fa-solid fa-briefcase"></i> {{ job.job_type }}</span>
+                            {% if job.salary %}
+                            <span><i class="fa-solid fa-indian-rupee-sign"></i> {{ job.salary }}</span>
+                            {% endif %}
+                            <span><i class="fa-regular fa-calendar"></i> {{ job.created_at.strftime('%d %b %Y') }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <span class="job-type">{{ job.job_type }}</span>
+                </div>
+
+            </div>
+
+            <hr>
+
+            <p class="text-secondary">
+                {{ job.description[:180] }}{% if job.description|length > 180 %}...{% endif %}
+            </p>
+
+            {% if job.skills_required %}
+            <p class="small mb-3">
+                <strong>Skills:</strong> {{ job.skills_required }}
+            </p>
+            {% endif %}
+
+            <div class="d-flex flex-wrap gap-2">
+
+    <a href="{{ url_for('job_details', job_id=job.id) }}"
+       class="btn btn-primary btn-sm">
+        View Job Details
+        <i class="fa-solid fa-arrow-right"></i>
+    </a>
+
+    <form method="POST"
+          action="{{ url_for('save_job', job_id=job.id) }}">
+
+        <button type="submit" class="btn btn-outline-success btn-sm">
+            <i class="fa-solid fa-bookmark me-1"></i>
+            Save Job
+        </button>
+
+    </form>
+
+</div>
+
+        </div>
+        {% endfor %}
+
+    {% else %}
+        <div class="empty-state">
+            <i class="fa-solid fa-magnifying-glass fa-3x text-primary mb-3"></i>
+            <h4 class="fw-bold">No Jobs Found</h4>
+            <p class="text-secondary">Try changing your search keywords or filters.</p>
+        </div>
+    {% endif %}
+
+</div>
+
+{% endblock %}

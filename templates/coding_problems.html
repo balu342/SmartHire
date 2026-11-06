@@ -1,0 +1,460 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartHire | Coding Problems</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            background: #080d1b;
+            color: #eef2ff;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .navbar {
+            background: #10182c;
+            border-bottom: 1px solid #26334f;
+            padding: 17px 6%;
+        }
+
+        .brand {
+            color: white;
+            font-size: 23px;
+            font-weight: 800;
+            text-decoration: none;
+        }
+
+        .brand span { color: #8b7bff; }
+
+        .back-link {
+            color: #c5cce0;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .back-link:hover { color: white; }
+
+        .hero {
+            padding: 65px 7% 45px;
+            background: linear-gradient(120deg, #151d3d, #302064, #111c39);
+        }
+
+        .hero h1 {
+            font-size: clamp(30px, 5vw, 46px);
+            font-weight: 800;
+        }
+
+        .hero p {
+            color: #c3c9e3;
+            max-width: 650px;
+            line-height: 1.8;
+        }
+
+        .hero-label {
+            color: #b8aaff;
+            font-size: 12px;
+            letter-spacing: 2px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            padding: 0 7%;
+            margin-top: -25px;
+        }
+
+        .stat-card {
+            background: #151f35;
+            border: 1px solid #293653;
+            padding: 22px;
+            border-radius: 17px;
+            box-shadow: 0 10px 30px #0003;
+        }
+
+        .stat-card i {
+            font-size: 22px;
+            color: #9b8aff;
+        }
+
+        .stat-card h3 {
+            margin: 12px 0 3px;
+            font-size: 27px;
+            font-weight: 800;
+        }
+
+        .stat-card p {
+            margin: 0;
+            color: #9ca8c4;
+            font-size: 13px;
+        }
+
+        .library {
+            padding: 55px 7%;
+        }
+
+        .section-title {
+            font-size: 27px;
+            font-weight: 800;
+        }
+
+        .section-subtitle {
+            color: #98a5c1;
+            font-size: 14px;
+        }
+
+        .filter-panel {
+            background: #151f35;
+            border: 1px solid #293653;
+            padding: 20px;
+            border-radius: 17px;
+            margin: 25px 0;
+        }
+
+        .form-control, .form-select {
+            background: #0c1428;
+            color: white;
+            border: 1px solid #354362;
+            border-radius: 10px;
+            min-height: 46px;
+        }
+
+        .form-control:focus, .form-select:focus {
+            background: #0c1428;
+            color: white;
+            border-color: #8b7bff;
+            box-shadow: 0 0 0 3px #8b7bff22;
+        }
+
+        .form-control::placeholder { color: #8290ad; }
+
+        .form-select option {
+            background: #151f35;
+            color: white;
+        }
+
+        .search-btn {
+            background: linear-gradient(120deg, #735cff, #a05bff);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 12px 22px;
+            font-weight: 700;
+            width: 100%;
+        }
+
+        .search-btn:hover {
+            opacity: .88;
+            color: white;
+        }
+
+        .problem-card {
+            background: #151f35;
+            border: 1px solid #293653;
+            border-radius: 16px;
+            padding: 23px;
+            height: 100%;
+            transition: .25s;
+        }
+
+        .problem-card:hover {
+            transform: translateY(-5px);
+            border-color: #8574ff;
+            box-shadow: 0 12px 30px #0004;
+        }
+
+        .problem-icon {
+            width: 43px;
+            height: 43px;
+            border-radius: 12px;
+            background: #29254c;
+            color: #b5a7ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 19px;
+        }
+
+        .problem-card h5 {
+            font-weight: 750;
+            margin: 17px 0 10px;
+        }
+
+        .problem-card p {
+            color: #9ca9c4;
+            font-size: 13px;
+            line-height: 1.7;
+            min-height: 65px;
+        }
+
+        .difficulty {
+            font-size: 12px;
+            font-weight: 700;
+            padding: 6px 12px;
+            border-radius: 20px;
+        }
+
+        .easy { background: #123e35; color: #55dfb1; }
+        .medium { background: #473718; color: #ffd477; }
+        .hard { background: #491f32; color: #ff829d; }
+
+        .category {
+            color: #b6a8ff;
+            font-size: 12px;
+            background: #282449;
+            padding: 6px 10px;
+            border-radius: 7px;
+        }
+
+        .problem-footer {
+            border-top: 1px solid #293653;
+            margin-top: 18px;
+            padding-top: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #9ba8c3;
+            font-size: 12px;
+        }
+
+        .empty-state {
+            background: #151f35;
+            border: 1px dashed #465477;
+            border-radius: 18px;
+            padding: 55px 20px;
+            text-align: center;
+            color: #aab5ce;
+        }
+
+        .empty-state i {
+            font-size: 42px;
+            color: #9281ff;
+            margin-bottom: 15px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px;
+            border-top: 1px solid #26334f;
+            color: #8995b0;
+            font-size: 13px;
+        }
+
+        @media(max-width: 768px) {
+            .stats { grid-template-columns: repeat(2, 1fr); }
+            .hero { padding: 45px 6%; }
+            .library { padding: 40px 6%; }
+        }
+
+        @media(max-width: 420px) {
+            .stats { grid-template-columns: 1fr 1fr; gap: 10px; }
+            .stat-card { padding: 15px; }
+        }
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar d-flex justify-content-between align-items-center">
+    <a class="brand" href="{{ url_for('home') }}">
+        <i class="fa-solid fa-code"></i> Smart<span>Hire</span>
+    </a>
+
+    <a class="back-link" href="{{ url_for('coding_practice') }}">
+        <i class="fa-solid fa-arrow-left me-2"></i> Coding Arena
+    </a>
+</nav>
+
+<section class="hero">
+    <div class="hero-label mb-3">
+        <i class="fa-solid fa-laptop-code me-2"></i> Coding Challenge Library
+    </div>
+
+    <h1>Practice. Improve. <br>Get Interview Ready.</h1>
+
+    <p class="mt-3">
+        Strengthen your programming skills with carefully selected
+        coding challenges. Practice DSA, Python, SQL and more.
+    </p>
+</section>
+
+<section class="stats">
+
+    <div class="stat-card">
+        <i class="fa-solid fa-code"></i>
+        <h3>{{ problems|length }}</h3>
+        <p>Matching Problems</p>
+    </div>
+
+    <div class="stat-card">
+        <i class="fa-solid fa-seedling"></i>
+        <h3>{{ easy_count if easy_count is defined else 'Easy' }}</h3>
+        <p>Easy Level</p>
+    </div>
+
+    <div class="stat-card">
+        <i class="fa-solid fa-bullseye"></i>
+        <h3>{{ medium_count if medium_count is defined else 'Medium' }}</h3>
+        <p>Medium Level</p>
+    </div>
+
+    <div class="stat-card">
+        <i class="fa-solid fa-fire"></i>
+        <h3>{{ hard_count if hard_count is defined else 'Hard' }}</h3>
+        <p>Hard Level</p>
+    </div>
+
+</section>
+
+<section class="library">
+
+    <div class="d-flex justify-content-between flex-wrap gap-3">
+        <div>
+            <h2 class="section-title">Explore Problems</h2>
+            <p class="section-subtitle">
+                Find your next coding challenge.
+            </p>
+        </div>
+
+        <span class="category align-self-start">
+            <i class="fa-solid fa-list-check me-1"></i>
+            {{ problems|length }} Questions Found
+        </span>
+    </div>
+
+    <form method="GET" action="{{ url_for('coding_problems') }}"
+          class="filter-panel">
+
+        <div class="row g-3 align-items-end">
+
+            <div class="col-lg-5">
+                <label class="form-label text-light">Search Problems</label>
+                <input type="text"
+                       name="search"
+                       class="form-control"
+                       placeholder="Search by title or description..."
+                       value="{{ search_query }}">
+            </div>
+
+            <div class="col-lg-3">
+                <label class="form-label text-light">Difficulty</label>
+                <select name="difficulty" class="form-select">
+                    <option value="">All Levels</option>
+                    <option value="Easy" {% if difficulty_filter == 'Easy' %}selected{% endif %}>Easy</option>
+                    <option value="Medium" {% if difficulty_filter == 'Medium' %}selected{% endif %}>Medium</option>
+                    <option value="Hard" {% if difficulty_filter == 'Hard' %}selected{% endif %}>Hard</option>
+                </select>
+            </div>
+
+            <div class="col-lg-2">
+                <label class="form-label text-light">Category</label>
+                <select name="category" class="form-select">
+                    <option value="">All Categories</option>
+                    {% for category in categories %}
+                    <option value="{{ category }}"
+                        {% if category_filter == category %}selected{% endif %}>
+                        {{ category }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="col-lg-2">
+                <button type="submit" class="search-btn">
+                    <i class="fa-solid fa-filter me-2"></i>Filter
+                </button>
+            </div>
+
+        </div>
+
+    </form>
+
+    {% if problems %}
+
+    <div class="row g-4">
+
+        {% for problem in problems %}
+
+        <div class="col-lg-4 col-md-6">
+
+            <div class="problem-card">
+
+                <div class="d-flex justify-content-between align-items-center">
+
+                    <div class="problem-icon">
+                        <i class="fa-solid fa-code"></i>
+                    </div>
+
+                    <span class="difficulty
+                        {% if problem.difficulty == 'Easy' %}easy
+                        {% elif problem.difficulty == 'Medium' %}medium
+                        {% else %}hard{% endif %}">
+                        {{ problem.difficulty }}
+                    </span>
+
+                </div>
+
+                <h5>{{ loop.index }}. {{ problem.title }}</h5>
+
+                <p>{{ problem.description }}</p>
+
+                <div>
+                    <span class="category">
+                        {{ problem.category or 'General' }}
+                    </span>
+                </div>
+
+                <div class="problem-footer">
+    <a href="{{ url_for('coding_problem_detail', problem_id=problem.id) }}"
+       class="practice-link">
+
+        <i class="fa-regular fa-clock me-1"></i>
+        Practice Challenge
+    </a>
+
+    <span>
+        <i class="fa-solid fa-star me-1"></i>
+        SmartHire
+    </span>
+</div>
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+    {% else %}
+
+    <div class="empty-state">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <h4>No Problems Found</h4>
+        <p>Try another search term or change your filters.</p>
+
+        <a href="{{ url_for('coding_problems') }}"
+           class="btn btn-outline-light mt-2">
+            Clear Filters
+        </a>
+    </div>
+
+    {% endif %}
+
+</section>
+
+<footer>
+    © 2026 SmartHire | AI-Powered Career & Coding Platform
+</footer>
+
+</body>
+</html>

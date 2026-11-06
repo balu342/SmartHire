@@ -1,0 +1,186 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    .applicants-page {
+        min-height: 85vh;
+        padding: 40px 0;
+        background: linear-gradient(135deg, #f3f4ff, #eef8ff);
+    }
+
+    .applicants-header {
+        background: linear-gradient(120deg, #312e81, #6d28d9);
+        color: white;
+        padding: 30px;
+        border-radius: 18px;
+        margin-bottom: 28px;
+        box-shadow: 0 10px 25px rgba(49, 46, 129, .15);
+    }
+
+    .applicant-card {
+        background: white;
+        border: 1px solid #e8eaf3;
+        border-radius: 16px;
+        padding: 24px;
+        margin-bottom: 18px;
+        box-shadow: 0 5px 18px rgba(30, 41, 59, .06);
+        transition: .2s ease;
+    }
+
+    .applicant-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(30, 41, 59, .10);
+    }
+
+    .candidate-name {
+        color: #312e81;
+        font-weight: 700;
+    }
+
+    .detail-label {
+        color: #64748b;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .status {
+        display: inline-block;
+        padding: 6px 13px;
+        border-radius: 20px;
+        background: #fff7ed;
+        color: #c2410c;
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+    .cover-letter {
+        background: #f8fafc;
+        padding: 15px;
+        border-radius: 10px;
+        color: #475569;
+        margin-top: 12px;
+        white-space: pre-wrap;
+    }
+
+    .empty-state {
+        background: white;
+        padding: 55px 20px;
+        border-radius: 16px;
+        text-align: center;
+        color: #64748b;
+    }
+</style>
+
+<div class="applicants-page">
+    <div class="container">
+
+        <div class="applicants-header">
+            <h2 class="fw-bold mb-2">
+                <i class="fas fa-users me-2"></i>View Applicants
+            </h2>
+            <p class="mb-0">
+                Review candidates who have applied for your job openings.
+            </p>
+        </div>
+
+        {% if applications %}
+            <h5 class="fw-bold mb-4">
+                Total Applications: {{ applications|length }}
+            </h5>
+
+            {% for application in applications %}
+            <div class="applicant-card">
+
+                <div class="d-flex flex-wrap justify-content-between gap-3">
+                    <div>
+                        <h5 class="candidate-name mb-1">
+                            {{ application.applicant.full_name }}
+                        </h5>
+                        <p class="text-muted mb-0">
+                            <i class="fas fa-envelope me-2"></i>
+                            {{ application.applicant.email }}
+                        </p>
+                    </div>
+
+                    <div class="mt-3">
+    <form method="POST"
+          action="{{ url_for('update_application_status', application_id=application.id) }}"
+          class="d-flex flex-wrap align-items-center gap-2">
+
+        <select name="status"
+                class="form-select"
+                style="width: 180px; border-radius: 10px;"
+                required>
+
+            <option value="Pending"
+                {% if application.status == 'Pending' %}selected{% endif %}>
+                Pending
+            </option>
+
+            <option value="Shortlisted"
+                {% if application.status == 'Shortlisted' %}selected{% endif %}>
+                Shortlisted
+            </option>
+
+            <option value="Rejected"
+                {% if application.status == 'Rejected' %}selected{% endif %}>
+                Rejected
+            </option>
+
+            <option value="Selected"
+                {% if application.status == 'Selected' %}selected{% endif %}>
+                Selected
+            </option>
+
+        </select>
+
+        <button type="submit" class="btn btn-success">
+            <i class="fas fa-save me-1"></i> Update Status
+        </button>
+
+    </form>
+</div>
+                </div>
+
+                <hr>
+
+                <p class="mb-2">
+                    <span class="detail-label">Applied For</span><br>
+                    <strong>{{ application.job.job_title }}</strong>
+                    at {{ application.job.company_name }}
+                </p>
+
+                <p class="mb-2">
+                    <span class="detail-label">Applied Date</span><br>
+                    {{ application.applied_at.strftime('%d %b %Y') if application.applied_at else 'Not available' }}
+                </p>
+
+                <div>
+                    <span class="detail-label">Cover Letter</span>
+                    <div class="cover-letter">
+                        {{ application.cover_letter or 'No cover letter provided.' }}
+                    </div>
+                </div>
+
+            </div>
+            {% endfor %}
+
+        {% else %}
+            <div class="empty-state">
+                <i class="fas fa-user-clock fa-3x mb-3"></i>
+                <h4>No Applicants Yet</h4>
+                <p class="mb-0">
+                    Applicants will appear here when candidates apply for your jobs.
+                </p>
+            </div>
+        {% endif %}
+
+        <a href="{{ url_for('recruiter_dashboard') }}"
+           class="btn btn-dark mt-3">
+            <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+        </a>
+
+    </div>
+</div>
+{% endblock %}

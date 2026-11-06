@@ -1,0 +1,399 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+
+<style>
+    .details-wrapper {
+        min-height: 100vh;
+        padding: 55px 0 80px;
+        background:
+            radial-gradient(circle at 10% 10%, rgba(99,102,241,.18), transparent 30%),
+            radial-gradient(circle at 90% 80%, rgba(59,130,246,.15), transparent 30%),
+            linear-gradient(135deg, #101735, #20245a 55%, #31236b);
+    }
+
+    .details-container {
+        max-width: 1050px;
+        margin: auto;
+    }
+
+    .back-link {
+        color: #e0e7ff;
+        text-decoration: none;
+        font-weight: 600;
+        display: inline-block;
+        margin-bottom: 22px;
+        transition: .3s;
+    }
+
+    .back-link:hover {
+        color: white;
+        transform: translateX(-4px);
+    }
+
+    .job-card {
+        background: #fff;
+        border-radius: 25px;
+        overflow: hidden;
+        box-shadow: 0 25px 70px rgba(0,0,0,.25);
+    }
+
+    .job-banner {
+        padding: 42px;
+        color: white;
+        background:
+            linear-gradient(115deg, rgba(31,41,110,.96), rgba(99,64,190,.90)),
+            url("https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=1400&q=85");
+        background-size: cover;
+        background-position: center;
+    }
+
+    .job-label {
+        display: inline-block;
+        background: rgba(255,255,255,.17);
+        border: 1px solid rgba(255,255,255,.25);
+        padding: 7px 15px;
+        border-radius: 30px;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: .7px;
+        margin-bottom: 18px;
+    }
+
+    .job-heading {
+        font-size: clamp(26px, 4vw, 38px);
+        font-weight: 800;
+        margin-bottom: 10px;
+    }
+
+    .company-name {
+        color: #e0e7ff;
+        font-size: 18px;
+        margin-bottom: 22px;
+    }
+
+    .job-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    .meta-item {
+        background: rgba(255,255,255,.15);
+        border: 1px solid rgba(255,255,255,.18);
+        padding: 10px 15px;
+        border-radius: 12px;
+        font-size: 14px;
+    }
+
+    .job-content {
+        padding: 40px;
+    }
+
+    .content-section {
+        margin-bottom: 32px;
+    }
+
+    .section-heading {
+        color: #252b67;
+        font-size: 20px;
+        font-weight: 750;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .section-icon {
+        width: 38px;
+        height: 38px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: #eeedff;
+        color: #635bdb;
+        border-radius: 11px;
+    }
+
+    .job-text {
+        color: #5d6680;
+        line-height: 1.9;
+        font-size: 15px;
+        white-space: pre-line;
+        margin-left: 50px;
+    }
+
+    .skills-box {
+        margin-left: 50px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .skill-tag {
+        display: inline-block;
+        padding: 9px 15px;
+        background: #f0efff;
+        border: 1px solid #dedcff;
+        color: #5146a9;
+        border-radius: 30px;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .action-area {
+        margin-top: 38px;
+        padding: 28px;
+        border-radius: 18px;
+        background: linear-gradient(135deg, #f4f3ff, #eef5ff);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+        flex-wrap: wrap;
+    }
+
+    .action-title {
+        color: #272b68;
+        font-size: 19px;
+        font-weight: 750;
+        margin-bottom: 5px;
+    }
+
+    .action-subtitle {
+        color: #747d98;
+        font-size: 13px;
+        margin: 0;
+    }
+
+    .apply-btn {
+        background: linear-gradient(135deg, #5145cd, #7955d9);
+        color: white;
+        border: none;
+        padding: 14px 27px;
+        border-radius: 12px;
+        font-weight: 700;
+        text-decoration: none;
+        display: inline-block;
+        box-shadow: 0 8px 20px rgba(91,77,204,.25);
+        transition: .3s;
+    }
+
+    .apply-btn:hover {
+        color: white;
+        transform: translateY(-3px);
+        box-shadow: 0 12px 25px rgba(91,77,204,.35);
+    }
+
+    .back-btn {
+        border: 1px solid #d7d9e8;
+        color: #505a78;
+        background: white;
+        padding: 13px 20px;
+        border-radius: 12px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: .3s;
+        display: inline-block;
+    }
+
+    .back-btn:hover {
+        background: #f1f0ff;
+        color: #5145cd;
+    }
+
+    @media(max-width: 600px) {
+        .details-wrapper {
+            padding: 30px 14px 50px;
+        }
+
+        .job-banner {
+            padding: 28px 22px;
+        }
+
+        .job-content {
+            padding: 25px 20px;
+        }
+
+        .job-text,
+        .skills-box {
+            margin-left: 0;
+        }
+
+        .action-area {
+            padding: 22px;
+        }
+
+        .apply-btn,
+        .back-btn {
+            width: 100%;
+            text-align: center;
+        }
+    }
+</style>
+
+<div class="details-wrapper">
+    <div class="container details-container">
+
+        <a href="{{ url_for('job_search') }}" class="back-link">
+            <i class="fa-solid fa-arrow-left me-2"></i>
+            Back to Job Search
+        </a>
+
+        <div class="job-card">
+
+            <!-- Job Header -->
+            <div class="job-banner">
+
+                <span class="job-label">
+                    <i class="fa-solid fa-star me-1"></i>
+                    JOB OPPORTUNITY
+                </span>
+
+                <h1 class="job-heading">{{ job.job_title }}</h1>
+
+                <div class="company-name d-flex align-items-center gap-3">
+
+    {% if company_profile and company_profile.logo %}
+        <img src="{{ url_for('static', filename=company_profile.logo) }}"
+             alt="{{ job.company_name }} Logo"
+             style="width:55px;
+                    height:55px;
+                    object-fit:contain;
+                    background:white;
+                    padding:6px;
+                    border-radius:12px;
+                    box-shadow:0 4px 12px rgba(0,0,0,0.12);">
+    {% else %}
+        <i class="fa-solid fa-building me-2"></i>
+    {% endif %}
+
+    <span>{{ job.company_name }}</span>
+
+</div>
+
+                <div class="job-meta">
+
+                    <div class="meta-item">
+                        <i class="fa-solid fa-location-dot me-2"></i>
+                        {{ job.location }}
+                    </div>
+
+                    <div class="meta-item">
+                        <i class="fa-solid fa-briefcase me-2"></i>
+                        {{ job.job_type }}
+                    </div>
+
+                    {% if job.salary %}
+                    <div class="meta-item">
+                        <i class="fa-solid fa-indian-rupee-sign me-2"></i>
+                        {{ job.salary }}
+                    </div>
+                    {% endif %}
+
+                    <div class="meta-item">
+                        <i class="fa-regular fa-calendar me-2"></i>
+                        {{ job.created_at.strftime('%d %b %Y') }}
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Job Information -->
+            <div class="job-content">
+
+                <div class="content-section">
+
+                    <h4 class="section-heading">
+                        <span class="section-icon">
+                            <i class="fa-solid fa-file-lines"></i>
+                        </span>
+                        Job Description
+                    </h4>
+
+                    <p class="job-text">{{ job.description }}</p>
+
+                </div>
+
+                <hr>
+
+                <div class="content-section">
+
+                    <h4 class="section-heading">
+                        <span class="section-icon">
+                            <i class="fa-solid fa-list-check"></i>
+                        </span>
+                        Requirements
+                    </h4>
+
+                    <p class="job-text">
+                        {{ job.requirements or "No specific requirements provided." }}
+                    </p>
+
+                </div>
+
+                <hr>
+
+                <div class="content-section">
+
+                    <h4 class="section-heading">
+                        <span class="section-icon">
+                            <i class="fa-solid fa-code"></i>
+                        </span>
+                        Required Skills
+                    </h4>
+
+                    <div class="skills-box">
+                        {% if job.skills_required %}
+                            {% for skill in job.skills_required.split(',') %}
+                                <span class="skill-tag">
+                                    {{ skill.strip() }}
+                                </span>
+                            {% endfor %}
+                        {% else %}
+                            <span class="text-secondary">
+                                Skills not specified.
+                            </span>
+                        {% endif %}
+                    </div>
+
+                </div>
+
+                <!-- Application Actions -->
+                <div class="action-area">
+
+                    <div>
+                        <h5 class="action-title">
+                            Interested in this opportunity?
+                        </h5>
+
+                        <p class="action-subtitle">
+                            Take the next step in your career. Apply for this position today.
+                        </p>
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-2">
+
+                        <a href="{{ url_for('job_search') }}"
+                           class="back-btn">
+                            <i class="fa-solid fa-arrow-left me-1"></i>
+                            Back
+                        </a>
+
+                        <a href="{{ url_for('apply_job', job_id=job.id) }}"
+                           class="apply-btn">
+                            <i class="fa-solid fa-paper-plane me-2"></i>
+                            Apply Now
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

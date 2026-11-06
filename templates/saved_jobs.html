@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<style>
+    body {
+        background: #f4f7ff;
+    }
+
+    .saved-header {
+        background: linear-gradient(135deg, #172554, #4f46e5);
+        color: white;
+        padding: 45px 30px;
+        border-radius: 20px;
+        margin-bottom: 30px;
+        box-shadow: 0 10px 30px rgba(79, 70, 229, 0.15);
+    }
+
+    .saved-card {
+        background: white;
+        border-radius: 18px;
+        padding: 25px;
+        margin-bottom: 20px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+        transition: 0.3s;
+    }
+
+    .saved-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 28px rgba(0, 0, 0, 0.10);
+    }
+
+    .job-title {
+        color: #1e293b;
+        font-weight: 700;
+    }
+
+    .job-info {
+        color: #64748b;
+        margin-right: 18px;
+    }
+
+    .empty-box {
+        background: white;
+        border-radius: 18px;
+        padding: 55px 20px;
+        text-align: center;
+    }
+</style>
+
+<div class="container py-5">
+
+    <div class="saved-header">
+        <h2 class="fw-bold">
+            <i class="fas fa-bookmark me-2"></i>
+            My Saved Jobs
+        </h2>
+
+        <p class="mb-0">
+            Keep track of the opportunities you are interested in.
+        </p>
+    </div>
+
+    {% if saved_jobs %}
+
+        {% for saved in saved_jobs %}
+
+            <div class="saved-card">
+
+                <div class="d-flex flex-wrap justify-content-between align-items-start">
+
+                    <div>
+                        <h4 class="job-title">
+                            {{ saved.job.job_title }}
+                        </h4>
+
+                        <h6 class="text-primary">
+                            {{ saved.job.company_name }}
+                        </h6>
+
+                        <div class="mt-3">
+
+                            <span class="job-info">
+                                <i class="fas fa-map-marker-alt"></i>
+                                {{ saved.job.location }}
+                            </span>
+
+                            <span class="job-info">
+                                <i class="fas fa-briefcase"></i>
+                                {{ saved.job.job_type }}
+                            </span>
+
+                            <span class="job-info">
+                                <i class="fas fa-money-bill-wave"></i>
+                                {{ saved.job.salary or "Not specified" }}
+                            </span>
+
+                        </div>
+
+                        <p class="text-muted mt-3 mb-0">
+                            Saved on:
+                            {{ saved.saved_at.strftime('%d %b %Y') }}
+                        </p>
+                    </div>
+
+                    <div class="d-flex gap-2 mt-3 mt-md-0">
+
+                        <a href="{{ url_for('job_details', job_id=saved.job.id) }}"
+                           class="btn btn-primary">
+                            View Details
+                        </a>
+
+                        <form method="POST"
+                              action="{{ url_for('remove_saved_job', saved_job_id=saved.id) }}">
+
+                            <button type="submit"
+                                    class="btn btn-outline-danger">
+                                <i class="fas fa-trash"></i>
+                                Remove
+                            </button>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <div class="empty-box">
+
+            <i class="fas fa-bookmark fa-3x text-primary mb-3"></i>
+
+            <h4>No Saved Jobs Yet</h4>
+
+            <p class="text-muted">
+                Browse jobs and save the ones you like.
+            </p>
+
+            <a href="{{ url_for('job_search') }}"
+               class="btn btn-primary mt-2">
+                Explore Jobs
+            </a>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,627 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Create Account | SmartHire</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #edf2ff, #f4edff);
+            padding: 35px 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .register-wrapper {
+            width: 100%;
+            max-width: 1120px;
+            min-height: 720px;
+            display: grid;
+            grid-template-columns: 0.95fr 1.05fr;
+            background: white;
+            border-radius: 25px;
+            overflow: hidden;
+            box-shadow: 0 25px 70px rgba(40, 30, 100, 0.14);
+        }
+
+        /* LEFT VISUAL PANEL */
+
+        .register-visual {
+            position: relative;
+            padding: 48px;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            background:
+                linear-gradient(145deg, rgba(16, 24, 65, 0.94), rgba(55, 49, 139, 0.76)),
+                url('https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1200')
+                center/cover;
+        }
+
+        .brand {
+            color: white;
+            text-decoration: none;
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        .brand i,
+        .brand span {
+            color: #c5a2ff;
+        }
+
+        .visual-content h1 {
+            font-size: 43px;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 20px;
+        }
+
+        .visual-content h1 span {
+            color: #c5a2ff;
+        }
+
+        .visual-content p {
+            color: #e2e5ff;
+            font-size: 14px;
+            line-height: 1.9;
+            margin-bottom: 30px;
+        }
+
+        .benefit {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            margin-bottom: 19px;
+            color: #f2f1ff;
+            font-size: 13px;
+        }
+
+        .benefit i {
+            height: 29px;
+            width: 29px;
+            border-radius: 50%;
+            background: rgba(194, 162, 255, 0.23);
+            color: #d5baff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .visual-footer {
+            color: #d5d4ee;
+            font-size: 12px;
+        }
+
+        /* FORM PANEL */
+
+        .register-panel {
+            padding: 42px 65px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .mobile-brand {
+            display: none;
+        }
+
+        .register-icon {
+            height: 55px;
+            width: 55px;
+            border-radius: 16px;
+            background: #eeeaff;
+            color: #7654e8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 23px;
+            margin-bottom: 20px;
+        }
+
+        .register-panel h2 {
+            font-size: 30px;
+            font-weight: 800;
+            color: #191936;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #85859b;
+            font-size: 13px;
+            margin-bottom: 23px;
+            line-height: 1.7;
+        }
+
+        .form-label {
+            color: #35354f;
+            font-weight: 700;
+            font-size: 12px;
+            margin-bottom: 8px;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-wrapper > i {
+            position: absolute;
+            top: 50%;
+            left: 15px;
+            transform: translateY(-50%);
+            color: #9692b2;
+        }
+
+        .form-control,
+        .form-select {
+            height: 49px;
+            border: 1px solid #e4e2f0;
+            border-radius: 10px;
+            background: #fafaff;
+            font-size: 13px;
+            transition: 0.3s;
+        }
+
+        .form-control {
+            padding-left: 43px;
+            padding-right: 45px;
+        }
+
+        .form-select {
+            padding-left: 15px;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: #8861ed;
+            box-shadow: 0 0 0 4px rgba(136, 97, 237, 0.11);
+            background: white;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: transparent;
+            border: none;
+            color: #85859b;
+            cursor: pointer;
+        }
+
+        /* ROLE SELECTION */
+
+        .role-title {
+            color: #35354f;
+            font-weight: 700;
+            font-size: 12px;
+            margin-bottom: 9px;
+        }
+
+        .role-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .role-option {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .role-option input {
+            position: absolute;
+            opacity: 0;
+        }
+
+        .role-card {
+            min-height: 72px;
+            border: 1px solid #e5e2f0;
+            border-radius: 11px;
+            padding: 12px;
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            background: #fafaff;
+            transition: 0.25s;
+        }
+
+        .role-card i {
+            font-size: 20px;
+            color: #8a64ec;
+        }
+
+        .role-card strong {
+            display: block;
+            color: #292943;
+            font-size: 12px;
+        }
+
+        .role-card small {
+            color: #85859b;
+            font-size: 10px;
+        }
+
+        .role-option input:checked + .role-card {
+            border: 2px solid #8861ed;
+            background: #f1edff;
+            box-shadow: 0 4px 14px rgba(136, 97, 237, 0.1);
+        }
+
+        .register-btn {
+            height: 51px;
+            width: 100%;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(120deg, #6650e8, #a44fe9);
+            color: white;
+            font-size: 14px;
+            font-weight: 700;
+            transition: 0.3s;
+        }
+
+        .register-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(126, 77, 225, 0.28);
+        }
+
+        .auth-switch {
+            text-align: center;
+            color: #77778e;
+            font-size: 12px;
+            margin-top: 20px;
+        }
+
+        .auth-switch a {
+            color: #7955e9;
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .auth-switch a:hover {
+            text-decoration: underline;
+        }
+
+        .back-home {
+            text-align: center;
+            margin-top: 15px;
+            color: #85859b;
+            text-decoration: none;
+            font-size: 12px;
+        }
+
+        .back-home:hover {
+            color: #7955e9;
+        }
+
+        .alert {
+            font-size: 12px;
+            border-radius: 9px;
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 900px) {
+            .register-wrapper {
+                max-width: 550px;
+                grid-template-columns: 1fr;
+            }
+
+            .register-visual {
+                min-height: 300px;
+                padding: 30px;
+            }
+
+            .visual-content h1 {
+                font-size: 32px;
+                margin-top: 30px;
+            }
+
+            .register-panel {
+                padding: 40px 35px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .register-visual {
+                padding: 24px;
+            }
+
+            .register-panel {
+                padding: 32px 22px;
+            }
+
+            .visual-content h1 {
+                font-size: 28px;
+            }
+
+            .register-panel h2 {
+                font-size: 26px;
+            }
+
+            .role-card {
+                padding: 9px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="register-wrapper">
+
+    <!-- LEFT IMAGE PANEL -->
+
+    <div class="register-visual">
+
+        <a href="{{ url_for('home') }}" class="brand">
+            <i class="fa-solid fa-briefcase"></i>
+            Smart<span>Hire</span>
+        </a>
+
+        <div class="visual-content">
+
+            <h1>
+                Your Future<br>
+                <span>Starts Here.</span>
+            </h1>
+
+            <p>
+                Create your SmartHire account and unlock new career
+                possibilities. Connect with companies and discover
+                opportunities that match your ambition.
+            </p>
+
+            <div class="benefit">
+                <i class="fa-solid fa-check"></i>
+                Discover jobs that match your skills
+            </div>
+
+            <div class="benefit">
+                <i class="fa-solid fa-check"></i>
+                Connect with leading companies
+            </div>
+
+            <div class="benefit">
+                <i class="fa-solid fa-check"></i>
+                Build your professional career
+            </div>
+
+        </div>
+
+        <div class="visual-footer">
+            <i class="fa-solid fa-rocket me-2"></i>
+            Start today. Grow tomorrow.
+        </div>
+
+    </div>
+
+
+    <!-- REGISTRATION FORM -->
+
+    <div class="register-panel">
+
+        <a href="{{ url_for('home') }}" class="brand mobile-brand">
+            <i class="fa-solid fa-briefcase"></i>
+            Smart<span>Hire</span>
+        </a>
+
+        <div class="register-icon">
+            <i class="fa-solid fa-user-plus"></i>
+        </div>
+
+        <h2>Create Account</h2>
+
+        <p class="subtitle">
+            Join SmartHire and take your first step toward success.
+        </p>
+
+
+        <!-- FLASH MESSAGES -->
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% endfor %}
+        {% endwith %}
+
+
+        <!-- REGISTRATION FORM -->
+
+        <form method="POST" action="{{ url_for('register') }}">
+
+            <div class="mb-3">
+
+                <label for="full_name" class="form-label">
+                    Full Name
+                </label>
+
+                <div class="input-wrapper">
+
+                    <i class="fa-regular fa-user"></i>
+
+                    <input
+                        type="text"
+                        id="full_name"
+                        name="full_name"
+                        class="form-control"
+                        placeholder="Enter your full name"
+                        autocomplete="name"
+                        required>
+
+                </div>
+            </div>
+
+
+            <div class="mb-3">
+
+                <label for="email" class="form-label">
+                    Email Address
+                </label>
+
+                <div class="input-wrapper">
+
+                    <i class="fa-regular fa-envelope"></i>
+
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        class="form-control"
+                        placeholder="Enter your email address"
+                        autocomplete="email"
+                        required>
+
+                </div>
+            </div>
+
+
+            <div class="mb-3">
+
+                <label for="password" class="form-label">
+                    Password
+                </label>
+
+                <div class="input-wrapper">
+
+                    <i class="fa-solid fa-lock"></i>
+
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        class="form-control"
+                        placeholder="Create a password"
+                        autocomplete="new-password"
+                        required>
+
+                    <button type="button" class="password-toggle" onclick="togglePassword()">
+                        <i class="fa-regular fa-eye" id="eyeIcon"></i>
+                    </button>
+
+                </div>
+            </div>
+
+
+            <div class="mb-4">
+
+                <div class="role-title">Register As</div>
+
+                <div class="role-options">
+
+                    <label class="role-option">
+
+                        <input
+                            type="radio"
+                            name="role"
+                            value="job_seeker"
+                            checked
+                            required>
+
+                        <div class="role-card">
+
+                            <i class="fa-solid fa-user-tie"></i>
+
+                            <div>
+                                <strong>Job Seeker</strong>
+                                <small>Find opportunities</small>
+                            </div>
+
+                        </div>
+
+                    </label>
+
+
+                    <label class="role-option">
+
+                        <input
+                            type="radio"
+                            name="role"
+                            value="recruiter"
+                            required>
+
+                        <div class="role-card">
+
+                            <i class="fa-solid fa-building"></i>
+
+                            <div>
+                                <strong>Recruiter</strong>
+                                <small>Hire talent</small>
+                            </div>
+
+                        </div>
+
+                    </label>
+
+                </div>
+            </div>
+
+
+            <button type="submit" class="register-btn">
+                Create My Account
+                <i class="fa-solid fa-arrow-right ms-2"></i>
+            </button>
+
+        </form>
+
+
+        <div class="auth-switch">
+            Already have an account?
+            <a href="{{ url_for('login') }}">Sign In</a>
+        </div>
+
+        <a href="{{ url_for('home') }}" class="back-home">
+            <i class="fa-solid fa-arrow-left me-1"></i>
+            Back to Home
+        </a>
+
+    </div>
+
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    function togglePassword() {
+
+        const password = document.getElementById("password");
+        const eyeIcon = document.getElementById("eyeIcon");
+
+        if (password.type === "password") {
+            password.type = "text";
+            eyeIcon.classList.remove("fa-eye");
+            eyeIcon.classList.add("fa-eye-slash");
+        } else {
+            password.type = "password";
+            eyeIcon.classList.remove("fa-eye-slash");
+            eyeIcon.classList.add("fa-eye");
+        }
+    }
+</script>
+
+</body>
+</html>

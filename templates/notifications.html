@@ -1,0 +1,163 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+
+<style>
+    .notifications-page {
+        max-width: 1000px;
+        margin: 40px auto;
+        padding: 20px;
+    }
+
+    .notification-header {
+        background: linear-gradient(135deg, #064e3b, #10b981);
+        color: white;
+        padding: 30px;
+        border-radius: 18px;
+        margin-bottom: 25px;
+    }
+
+    .notification-card {
+        background: white;
+        border: 1px solid #e5e7eb;
+        border-radius: 14px;
+        padding: 20px;
+        margin-bottom: 15px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 15px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+    }
+
+    .notification-card.unread {
+        border-left: 5px solid #10b981;
+        background: #f0fdf4;
+    }
+
+    .notification-message {
+        color: #1f2937;
+        font-weight: 500;
+        margin-bottom: 8px;
+    }
+
+    .notification-date {
+        color: #6b7280;
+        font-size: 13px;
+    }
+
+    .notification-actions {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+
+    .notification-actions button {
+        border: none;
+        border-radius: 8px;
+        padding: 8px 12px;
+        font-size: 13px;
+        cursor: pointer;
+    }
+
+    .read-btn {
+        background: #d1fae5;
+        color: #065f46;
+    }
+
+    .delete-btn {
+        background: #fee2e2;
+        color: #991b1b;
+    }
+
+    .empty-notifications {
+        text-align: center;
+        background: white;
+        padding: 55px 20px;
+        border-radius: 15px;
+        color: #6b7280;
+    }
+
+    @media (max-width: 600px) {
+        .notification-card {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+    }
+</style>
+
+<div class="notifications-page">
+
+    <div class="notification-header">
+        <h2><i class="fas fa-bell"></i> Notifications</h2>
+        <p class="mb-0">Stay updated on your job applications and recruitment activities.</p>
+    </div>
+
+    {% if notifications %}
+
+        {% for notification in notifications %}
+
+        <div class="notification-card {% if not notification.is_read %}unread{% endif %}">
+
+            <div>
+                <div class="notification-message">
+                    {% if notification.notification_type == "new_application" %}
+                        <i class="fas fa-user-plus text-success"></i>
+                    {% else %}
+                        <i class="fas fa-bell text-success"></i>
+                    {% endif %}
+
+                    {{ notification.message }}
+                </div>
+
+                <div class="notification-date">
+                    <i class="far fa-clock"></i>
+                    {{ notification.created_at.strftime("%d %b %Y, %I:%M %p") }}
+
+                    {% if not notification.is_read %}
+                        <span class="badge bg-success ms-2">New</span>
+                    {% else %}
+                        <span class="badge bg-secondary ms-2">Read</span>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="notification-actions">
+
+                {% if not notification.is_read %}
+                <form method="POST"
+                      action="{{ url_for('mark_notification_read', notification_id=notification.id) }}">
+                    <button type="submit" class="read-btn">
+                        <i class="fas fa-check"></i> Mark Read
+                    </button>
+                </form>
+                {% endif %}
+
+                <form method="POST"
+                      action="{{ url_for('delete_notification', notification_id=notification.id) }}"
+                      onsubmit="return confirm('Delete this notification?');">
+                    <button type="submit" class="delete-btn">
+                        <i class="fas fa-trash"></i> Delete
+                    </button>
+                </form>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <div class="empty-notifications">
+            <i class="far fa-bell-slash fa-3x mb-3"></i>
+            <h4>No notifications yet</h4>
+            <p>New updates will appear here.</p>
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

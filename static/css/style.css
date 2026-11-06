@@ -1,0 +1,504 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f5f7ff;
+    color: #172033;
+}
+
+/* HOME NAVBAR */
+
+.navbar {
+    background: #145cf0;
+    padding: 18px 0;
+}
+
+.navbar-brand {
+    font-size: 27px;
+}
+
+.nav-link-item {
+    color: white;
+    text-decoration: none;
+    margin: 0 18px;
+    font-weight: 500;
+}
+
+/* HOME HERO */
+
+.hero-section {
+    padding: 85px 0;
+    background: linear-gradient(120deg, #edf2ff, #ffffff);
+}
+
+.hero-content h1 {
+    font-size: 52px;
+    font-weight: 800;
+    line-height: 1.2;
+    margin: 15px 0;
+}
+
+.hero-content h1 span {
+    color: #1764ed;
+}
+
+.hero-content > p {
+    font-size: 18px;
+    color: #606b80;
+    line-height: 1.8;
+    max-width: 540px;
+}
+
+.hero-image {
+    width: 100%;
+    height: 390px;
+    object-fit: cover;
+    border-radius: 22px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+}
+
+.hero-stats {
+    display: flex;
+    gap: 35px;
+    flex-wrap: wrap;
+}
+
+.hero-stats h3 {
+    color: #1764ed;
+    font-weight: bold;
+}
+
+.hero-stats p {
+    color: #667085;
+    font-size: 14px;
+}
+
+/* HOME FEATURES */
+
+.features-section {
+    padding: 75px 0;
+}
+
+.features-section h2 {
+    font-size: 34px;
+    font-weight: 750;
+}
+
+.section-subtitle {
+    color: #697386;
+    margin-top: 12px;
+}
+
+.feature-card {
+    background: white;
+    padding: 18px;
+    border-radius: 18px;
+    height: 100%;
+    text-align: left;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+    transition: 0.3s;
+}
+
+.feature-card:hover {
+    transform: translateY(-8px);
+}
+
+.feature-card img {
+    width: 100%;
+    height: 210px;
+    object-fit: cover;
+    border-radius: 12px;
+    margin-bottom: 20px;
+}
+
+.feature-card h4 {
+    font-weight: bold;
+    margin-bottom: 12px;
+}
+
+.feature-card p {
+    color: #687386;
+    line-height: 1.7;
+}
+
+/* CTA AND FOOTER */
+
+.cta-section {
+    background: linear-gradient(120deg, #145cf0, #673de6);
+    color: white;
+    padding: 65px 20px;
+}
+
+.cta-section h2 {
+    font-size: 35px;
+    font-weight: bold;
+}
+
+.cta-section p {
+    margin: 15px 0 25px;
+}
+
+footer {
+    background: #101a32;
+    color: white;
+    text-align: center;
+    padding: 22px;
+}
+
+footer p {
+    margin: 0;
+}
+
+/* LOGIN AND REGISTER */
+
+.auth-page {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #eaf0ff, #f7f8ff);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 35px 20px;
+}
+
+.auth-container {
+    width: 100%;
+    max-width: 1150px;
+    min-height: 680px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    background: white;
+    border-radius: 25px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(30,64,175,0.13);
+}
+
+.auth-image {
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: flex-end;
+    padding: 55px 45px;
+    color: white;
+    min-height: 680px;
+}
+
+.register-image {
+    background-image:
+        linear-gradient(180deg, rgba(15,35,85,0.15), rgba(12,30,75,0.92)),
+        url("https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=1200");
+}
+
+.login-image {
+    background-image:
+        linear-gradient(180deg, rgba(15,35,85,0.15), rgba(12,30,75,0.92)),
+        url("https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=1200");
+}
+
+.auth-image-content {
+    position: relative;
+    z-index: 1;
+}
+
+.auth-image-content h1 {
+    font-size: 42px;
+    font-weight: 800;
+    margin-bottom: 18px;
+}
+
+.auth-image-content p {
+    font-size: 16px;
+    line-height: 1.8;
+    color: #e1e9ff;
+    margin-bottom: 30px;
+}
+
+.auth-highlight {
+    margin-top: 16px;
+    font-size: 15px;
+    color: white;
+}
+
+.auth-highlight span {
+    background: white;
+    color: #1764ed;
+    padding: 4px 8px;
+    border-radius: 50%;
+    margin-right: 10px;
+    font-weight: bold;
+}
+
+/* FORM SECTION */
+
+.auth-form-section {
+    padding: 35px 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 0;
+}
+
+.auth-logo {
+    color: #1764ed;
+    font-size: 27px;
+    font-weight: 800;
+    text-decoration: none;
+    margin-bottom: 35px;
+}
+
+.auth-logo:hover {
+    color: #6545e8;
+}
+
+.auth-form-box {
+    width: 100%;
+    max-width: 410px;
+    margin: auto;
+    padding: 10px 0;
+}
+
+.auth-icon {
+    font-size: 35px;
+    margin-bottom: 12px;
+}
+
+.auth-form-box h2 {
+    font-size: 32px;
+    font-weight: 800;
+    color: #172033;
+}
+
+.auth-subtitle {
+    color: #7a8497;
+    margin-bottom: 28px;
+    font-size: 14px;
+}
+
+.auth-form-box label {
+    display: block;
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 9px;
+    color: #27344d;
+}
+
+.auth-form-box .form-control,
+.auth-form-box .form-select {
+    height: 51px;
+    border: 1px solid #dce3f0;
+    border-radius: 10px;
+    padding: 12px 15px;
+    background-color: #f9fbff;
+    font-size: 14px;
+}
+
+.auth-form-box .form-control:focus,
+.auth-form-box .form-select:focus {
+    border-color: #1764ed;
+    box-shadow: 0 0 0 3px rgba(23,100,237,0.12);
+    background-color: white;
+}
+
+.auth-submit {
+    height: 52px;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(120deg, #1764ed, #6545e8);
+    color: white;
+    font-weight: 700;
+    font-size: 16px;
+    transition: 0.3s;
+}
+
+.auth-submit:hover {
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(23,100,237,0.25);
+}
+
+.auth-form-box .alert {
+    font-size: 13px;
+    border-radius: 8px;
+}
+
+.auth-switch {
+    text-align: center;
+    margin-top: 27px;
+    color: #687386;
+    font-size: 14px;
+}
+
+.auth-switch a {
+    color: #1764ed;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.auth-switch a:hover {
+    color: #6545e8;
+}
+
+.back-home {
+    display: block;
+    text-align: center;
+    margin-top: 20px;
+    color: #687386;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.back-home:hover {
+    color: #1764ed;
+}
+
+/* RESPONSIVE DESIGN */
+
+@media (max-width: 850px) {
+    .auth-container {
+        grid-template-columns: 1fr;
+    }
+
+    .auth-image {
+        min-height: 300px;
+        padding: 35px;
+    }
+
+    .auth-image-content h1 {
+        font-size: 32px;
+    }
+
+    .auth-form-section {
+        padding: 35px 25px;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero-section {
+        padding: 50px 0;
+    }
+
+    .hero-content h1 {
+        font-size: 38px;
+    }
+
+    .hero-image {
+        height: 270px;
+        margin-top: 35px;
+    }
+
+    .features-section h2 {
+        font-size: 27px;
+    }
+
+    .nav-link-item {
+        margin: 0 7px;
+    }
+}
+
+@media (max-width: 480px) {
+    .auth-page {
+        padding: 12px;
+    }
+
+    .auth-image {
+        min-height: 250px;
+        padding: 25px;
+    }
+
+    .auth-form-section {
+        padding: 30px 20px;
+    }
+
+    .auth-form-box h2 {
+        font-size: 27px;
+    }
+
+    .auth-image-content h1 {
+        font-size: 27px;
+    }
+}
+.navbar {
+    background: #ffffff;
+    padding: 12px 5%;
+    box-shadow: 0 3px 15px rgba(0,0,0,0.06);
+}
+
+.navbar-inner {
+    max-width: 1450px;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    color: #19368f;
+    font-size: 27px;
+    font-weight: 800;
+}
+
+.brand-logo {
+    width: 55px;
+    height: 55px;
+    object-fit: contain;
+    border-radius: 10px;
+}
+
+.nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+.nav-user {
+    color: #26334d;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.logout-btn {
+    background: #edf1ff;
+    color: #315be8;
+    padding: 13px 22px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.logout-btn:hover {
+    background: #315be8;
+    color: white;
+}
+<nav class="navbar">
+    <div class="navbar-inner">
+
+        <a href="/" class="brand">
+            <img src="{{ url_for('static', filename='images/smarthire-logo.png') }}"
+                 alt="SmartHire Logo"
+                 class="brand-logo">
+            <span>SmartHire</span>
+        </a>
+
+        <div class="nav-actions">
+            <span class="nav-user">
+                <i class="fa-solid fa-circle-user"></i>
+                {{ current_user.full_name }}
+            </span>
+
+            <a href="{{ url_for('logout') }}" class="logout-btn">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                Logout
+            </a>
+        </div>
+
+    </div>
+</nav>

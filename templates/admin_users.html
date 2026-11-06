@@ -1,0 +1,603 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartHire | User Management</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background: #f3f5fb;
+            color: #17213d;
+        }
+
+        .sidebar {
+            width: 260px;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            background: linear-gradient(180deg, #101a38, #172b55 65%, #203c73);
+            padding: 27px 18px;
+            color: white;
+            z-index: 1000;
+        }
+
+        .brand {
+            font-size: 25px;
+            font-weight: 800;
+            color: white;
+            text-decoration: none;
+            display: block;
+            padding: 0 12px 30px;
+        }
+
+        .brand i { color: #69a2ff; margin-right: 9px; }
+
+        .admin-label {
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 1.7px;
+            color: #8296bd;
+            padding: 15px 13px 12px;
+        }
+
+        .side-link {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            padding: 13px 14px;
+            border-radius: 11px;
+            color: #c3cee4;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            transition: 0.25s;
+        }
+
+        .side-link:hover, .side-link.active {
+            color: white;
+            background: linear-gradient(100deg, #3266d9, #5578e8);
+        }
+
+        .side-link i { width: 19px; text-align: center; }
+
+        .main-content {
+            margin-left: 260px;
+            padding: 30px 35px 45px;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .page-title {
+            font-size: 25px;
+            font-weight: 800;
+            margin: 0;
+        }
+
+        .page-subtitle {
+            font-size: 13px;
+            color: #8590a7;
+            margin-top: 7px;
+        }
+
+        .admin-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: white;
+            padding: 10px 15px;
+            border-radius: 13px;
+        }
+
+        .avatar {
+            width: 42px;
+            height: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #315bea, #7547d8);
+            color: white;
+            border-radius: 12px;
+        }
+
+        .admin-profile strong { display: block; font-size: 12px; }
+        .admin-profile small { color: #8993a8; font-size: 10px; }
+
+        .welcome-card {
+            padding: 27px;
+            border-radius: 18px;
+            background: linear-gradient(110deg, #1b3474, #315bd2 65%, #704ed0);
+            color: white;
+            margin-bottom: 25px;
+        }
+
+        .welcome-card h2 {
+            font-size: 23px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .welcome-card p {
+            font-size: 13px;
+            color: #dce7ff;
+            margin: 0;
+        }
+
+        .summary-card {
+            background: white;
+            padding: 22px;
+            border: 1px solid #e9edf6;
+            border-radius: 15px;
+            margin-bottom: 23px;
+        }
+
+        .summary-card small {
+            color: #8993a8;
+            font-weight: 600;
+        }
+
+        .summary-card h3 {
+            font-size: 27px;
+            font-weight: 800;
+            margin: 8px 0 0;
+        }
+
+        .table-container {
+            background: white;
+            padding: 23px;
+            border-radius: 17px;
+            border: 1px solid #e9edf6;
+            box-shadow: 0 5px 18px rgba(20,40,90,0.035);
+        }
+
+        .table-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .table-heading h4 {
+            font-size: 17px;
+            font-weight: 800;
+            margin: 0;
+        }
+
+        .search-box, .filter-box {
+            border: 1px solid #e1e7f1;
+            border-radius: 10px;
+            padding: 11px 13px;
+            outline: none;
+            font-size: 12px;
+            background: #fff;
+        }
+
+        .search-box { width: 250px; }
+
+        .search-box:focus, .filter-box:focus {
+            border-color: #4267d5;
+            box-shadow: 0 0 0 3px rgba(66,103,213,0.1);
+        }
+
+        .table {
+            vertical-align: middle;
+            min-width: 700px;
+        }
+
+        .table thead th {
+            background: #f6f8fc;
+            color: #7d89a1;
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            padding: 15px;
+            border: none;
+        }
+
+        .table tbody td {
+            padding: 16px 15px;
+            font-size: 12px;
+            border-color: #f0f2f7;
+        }
+
+        .user-name {
+            font-weight: 700;
+            color: #263657;
+        }
+
+        .user-email {
+            color: #8993a8;
+            font-size: 11px;
+        }
+
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: #eaf0ff;
+            color: #3864dc;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            margin-right: 9px;
+        }
+
+        .role-badge, .status-badge {
+            display: inline-block;
+            padding: 7px 11px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .role-admin { background: #f0eaff; color: #8051d5; }
+        .role-job_seeker { background: #eaf0ff; color: #3864dc; }
+        .role-recruiter { background: #e4f8ef; color: #159765; }
+
+        .status-active { background: #e4f8ef; color: #159765; }
+        .status-inactive { background: #ffeaf1; color: #dc5481; }
+
+        .empty-state {
+            text-align: center;
+            padding: 45px 15px;
+            color: #8993a8;
+        }
+
+        .empty-state i {
+            font-size: 35px;
+            margin-bottom: 13px;
+            color: #b5c0d4;
+        }
+
+        .back-btn {
+            text-decoration: none;
+            display: inline-block;
+            padding: 10px 15px;
+            border-radius: 10px;
+            background: white;
+            color: #4267d5;
+            border: 1px solid #e1e7f1;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .back-btn:hover {
+            background: #4267d5;
+            color: white;
+        }
+
+        .footer {
+            margin-top: 35px;
+            text-align: center;
+            color: #9aa4b7;
+            font-size: 11px;
+        }
+
+        @media(max-width: 768px) {
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 22px 16px;
+            }
+
+            .topbar {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .search-box { width: 100%; }
+            .filter-box { width: 100%; }
+        }
+    </style>
+</head>
+
+<body>
+
+<aside class="sidebar">
+
+    <a href="{{ url_for('admin_dashboard') }}" class="brand">
+        <i class="fa-solid fa-briefcase"></i>SmartHire
+    </a>
+
+    <div class="admin-label">ADMINISTRATION</div>
+
+    <a href="{{ url_for('admin_dashboard') }}" class="side-link">
+        <i class="fa-solid fa-chart-pie"></i> Dashboard
+    </a>
+
+    <div class="admin-label">PLATFORM MANAGEMENT</div>
+
+    <a href="{{ url_for('admin_users') }}" class="side-link active">
+        <i class="fa-solid fa-users"></i> User Management
+    </a>
+
+    <a href="{{ url_for('admin_dashboard') }}#management" class="side-link">
+        <i class="fa-solid fa-building"></i> Management Center
+    </a>
+
+    <div class="admin-label">ACCOUNT</div>
+
+    <a href="{{ url_for('home') }}" class="side-link">
+        <i class="fa-solid fa-house"></i> Visit Website
+    </a>
+
+    <a href="{{ url_for('logout') }}" class="side-link">
+        <i class="fa-solid fa-right-from-bracket"></i> Logout
+    </a>
+
+</aside>
+
+<main class="main-content">
+
+    <header class="topbar">
+        <div>
+            <h1 class="page-title">User Management</h1>
+            <p class="page-subtitle">Manage and monitor all SmartHire platform accounts.</p>
+        </div>
+
+        <div class="admin-profile">
+            <div class="avatar">
+                <i class="fa-solid fa-user-shield"></i>
+            </div>
+            <div>
+                <strong>{{ current_user.full_name }}</strong>
+                <small>Platform Administrator</small>
+            </div>
+        </div>
+    </header>
+
+    <section class="welcome-card">
+        <h2><i class="fa-solid fa-users-gear me-2"></i>User Management Center</h2>
+        <p>View registered users, search accounts and monitor account roles and status.</p>
+    </section>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="summary-card">
+                <small><i class="fa-solid fa-users me-2"></i>Total Registered Users</small>
+                <h3>{{ users|length }}</h3>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="summary-card">
+                <small><i class="fa-solid fa-user-check me-2"></i>Active Accounts</small>
+                <h3>{{ users|selectattr('is_active')|list|length }}</h3>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="summary-card">
+                <small><i class="fa-solid fa-user-slash me-2"></i>Inactive Accounts</small>
+                <h3>{{ users|rejectattr('is_active')|list|length }}</h3>
+            </div>
+        </div>
+    </div>
+
+    <section class="table-container">
+
+        <div class="table-heading">
+            <h4><i class="fa-solid fa-list me-2" style="color:#4267d5;"></i>Registered Users</h4>
+
+            <a href="{{ url_for('admin_dashboard') }}" class="back-btn">
+                <i class="fa-solid fa-arrow-left me-1"></i> Back to Dashboard
+            </a>
+        </div>
+
+        <div class="row g-2 mb-4">
+
+            <div class="col-md-6">
+                <input type="text" id="searchInput"
+                       class="form-control search-box"
+                       placeholder="Search by name or email...">
+            </div>
+
+            <div class="col-md-4">
+                <select id="roleFilter" class="form-select filter-box">
+                    <option value="all">All User Roles</option>
+                    <option value="job_seeker">Job Seeker</option>
+                    <option value="recruiter">Recruiter</option>
+                    <option value="admin">Admin</option>
+                </select>
+            </div>
+
+            <div class="col-md-2">
+                <select id="statusFilter" class="form-select filter-box">
+                    <option value="all">All Status</option>
+                    <option value="active">Active</option>
+                    <option value="inactive">Inactive</option>
+                </select>
+            </div>
+
+        </div>
+
+        <div class="table-responsive">
+
+            <table class="table" id="usersTable">
+
+                <thead>
+                    <tr>
+                        <th>User</th>
+                        <th>User ID</th>
+                        <th>Role</th>
+                        <th>Account Status</th>
+                        <th>Account Type</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    {% for user in users %}
+
+                    <tr class="user-row"
+                        data-name="{{ user.full_name|lower }}"
+                        data-email="{{ user.email|lower }}"
+                        data-role="{{ user.role }}"
+                        data-status="{{ 'active' if user.is_active else 'inactive' }}">
+
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div class="user-avatar">
+                                    {{ user.full_name[0]|upper }}
+                                </div>
+
+                                <div>
+                                    <div class="user-name">{{ user.full_name }}</div>
+                                    <div class="user-email">{{ user.email }}</div>
+                                </div>
+                            </div>
+                        </td>
+
+                        <td>#{{ user.id }}</td>
+
+                        <td>
+                            <span class="role-badge role-{{ user.role }}">
+                                {{ user.role|replace('_', ' ')|title }}
+                            </span>
+                        </td>
+
+                        <td>
+                            {% if user.is_active %}
+                                <span class="status-badge status-active">
+                                    <i class="fa-solid fa-circle-check me-1"></i>Active
+                                </span>
+                            {% else %}
+                                <span class="status-badge status-inactive">
+                                    <i class="fa-solid fa-circle-xmark me-1"></i>Inactive
+                                </span>
+                            {% endif %}
+                        </td>
+
+                        <td>
+                            {% if user.role == 'admin' %}
+                                Administrator
+                            {% elif user.role == 'recruiter' %}
+                                Employer Account
+                            {% else %}
+                                Candidate Account
+                            {% endif %}
+                        </td>
+
+                    </tr>
+
+                    {% else %}
+
+                    <tr>
+                        <td colspan="5">
+                            <div class="empty-state">
+                                <i class="fa-solid fa-users d-block"></i>
+                                <h5>No users found</h5>
+                                <p>Registered users will appear here.</p>
+                            </div>
+                        </td>
+                    </tr>
+
+                    {% endfor %}
+
+                    <tr id="noResults" style="display:none;">
+                        <td colspan="5">
+                            <div class="empty-state">
+                                <i class="fa-solid fa-magnifying-glass d-block"></i>
+                                <h5>No matching users</h5>
+                                <p>Try changing your search or filter.</p>
+                            </div>
+                        </td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <p class="text-muted mt-3 mb-0" style="font-size:11px;">
+            Showing <strong id="visibleCount">{{ users|length }}</strong>
+            of {{ users|length }} registered accounts.
+        </p>
+
+    </section>
+
+    <footer class="footer">
+        © 2026 SmartHire | User Management Center
+        <br>Securely manage your recruitment platform.
+    </footer>
+
+</main>
+
+<script>
+    const searchInput = document.getElementById("searchInput");
+    const roleFilter = document.getElementById("roleFilter");
+    const statusFilter = document.getElementById("statusFilter");
+    const rows = document.querySelectorAll(".user-row");
+    const noResults = document.getElementById("noResults");
+    const visibleCount = document.getElementById("visibleCount");
+
+    function filterUsers() {
+
+        const search = searchInput.value.toLowerCase().trim();
+        const role = roleFilter.value;
+        const status = statusFilter.value;
+
+        let visible = 0;
+
+        rows.forEach(row => {
+
+            const name = row.dataset.name;
+            const email = row.dataset.email;
+            const userRole = row.dataset.role;
+            const userStatus = row.dataset.status;
+
+            const matchesSearch =
+                name.includes(search) || email.includes(search);
+
+            const matchesRole =
+                role === "all" || userRole === role;
+
+            const matchesStatus =
+                status === "all" || userStatus === status;
+
+            if (matchesSearch && matchesRole && matchesStatus) {
+                row.style.display = "";
+                visible++;
+            } else {
+                row.style.display = "none";
+            }
+
+        });
+
+        visibleCount.textContent = visible;
+        noResults.style.display = visible === 0 ? "" : "none";
+    }
+
+    searchInput.addEventListener("input", filterUsers);
+    roleFilter.addEventListener("change", filterUsers);
+    statusFilter.addEventListener("change", filterUsers);
+</script>
+
+</body>
+</html>

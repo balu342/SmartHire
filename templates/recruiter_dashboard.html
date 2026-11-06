@@ -1,0 +1,870 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartHire | Recruiter Dashboard</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background:
+                radial-gradient(circle at 10% 10%, #e0fff2 0, transparent 30%),
+                radial-gradient(circle at 90% 30%, #dff7f1 0, transparent 28%),
+                linear-gradient(135deg, #f5fbf8, #edf8f4);
+            color: #123b35;
+        }
+
+        .navbar {
+            background: rgba(255,255,255,.94);
+            backdrop-filter: blur(15px);
+            padding: 14px 5%;
+            box-shadow: 0 4px 25px rgba(0,90,70,.07);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .brand-logo {
+            width: 165px;
+            height: 60px;
+            object-fit: contain;
+        }
+
+        .nav-user {
+            color: #174d43;
+            font-weight: 700;
+        }
+
+        .logout-btn {
+            background: #e5f5ef;
+            color: #00856b;
+            padding: 11px 18px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 700;
+            transition: .3s;
+        }
+
+        .logout-btn:hover {
+            background: #00856b;
+            color: white;
+        }
+
+        .main-container {
+            max-width: 1450px;
+            margin: auto;
+            padding: 35px 30px 60px;
+        }
+
+        .hero {
+            min-height: 355px;
+            background: linear-gradient(120deg, #004f45, #008f75, #25c49a);
+            border-radius: 28px;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+            color: white;
+            margin-bottom: 48px;
+            box-shadow: 0 18px 45px rgba(0,110,85,.20);
+        }
+
+        .hero-content {
+            flex: 1;
+            padding: 45px;
+        }
+
+        .hero-content h1 {
+            font-size: clamp(30px,4vw,44px);
+            font-weight: 800;
+            margin: 20px 0;
+            line-height: 1.2;
+        }
+
+        .hero-content p {
+            color: #e0fff4;
+            line-height: 1.9;
+            max-width: 570px;
+            font-size: 16px;
+        }
+
+        .hero-tag {
+            display: inline-block;
+            background: rgba(255,255,255,.18);
+            padding: 10px 17px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .hero-btn {
+            display: inline-block;
+            background: white;
+            color: #00856b;
+            text-decoration: none;
+            padding: 14px 23px;
+            border-radius: 10px;
+            font-weight: 800;
+            margin-top: 15px;
+            transition: .3s;
+        }
+
+        .hero-btn:hover {
+            background: #d9fff0;
+            color: #005b49;
+            transform: translateY(-3px);
+        }
+
+        .hero-image {
+            flex: 1;
+            min-width: 40%;
+            align-self: stretch;
+            background:
+                linear-gradient(90deg,rgba(0,100,75,.12),transparent),
+                url("https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=1200&auto=format&fit=crop");
+            background-size: cover;
+            background-position: center;
+            min-height: 355px;
+        }
+
+        .section-title {
+            font-size: 25px;
+            font-weight: 800;
+            color: #124b3e;
+            margin-bottom: 9px;
+        }
+
+        .section-description {
+            color: #718b83;
+            margin-bottom: 27px;
+            line-height: 1.7;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4,1fr);
+            gap: 22px;
+            margin-bottom: 48px;
+        }
+
+        .stat-card {
+            background: white;
+            border: 1px solid #e1f0e9;
+            padding: 25px;
+            border-radius: 18px;
+            box-shadow: 0 7px 24px rgba(0,90,65,.05);
+            transition: .3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: "";
+            position: absolute;
+            height: 5px;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: linear-gradient(90deg,#00856b,#62d6ad);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 14px 30px rgba(0,90,65,.11);
+        }
+
+        .stat-icon {
+            height: 52px;
+            width: 52px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 21px;
+            margin-bottom: 17px;
+        }
+
+        .green-bg { background: #e2f7ee; color: #00856b; }
+        .mint-bg { background: #e4f8f5; color: #079b87; }
+        .teal-bg { background: #e4f2f9; color: #26849b; }
+        .lime-bg { background: #f0f8df; color: #719b2e; }
+
+        .stat-card h3 {
+            font-size: 31px;
+            font-weight: 800;
+            margin-bottom: 5px;
+            color: #124b3e;
+        }
+
+        .stat-card p {
+            color: #718b83;
+            font-size: 14px;
+            margin: 0;
+        }
+
+        .action-grid {
+            display: grid;
+            grid-template-columns: repeat(3,1fr);
+            gap: 25px;
+            margin-bottom: 48px;
+        }
+
+        .action-card {
+            background: white;
+            border: 1px solid #e1f0e9;
+            padding: 29px;
+            border-radius: 19px;
+            box-shadow: 0 7px 24px rgba(0,90,65,.05);
+            transition: .3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .action-card::before {
+            content: "";
+            height: 5px;
+            width: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            background: linear-gradient(90deg,#00856b,#62d6ad);
+        }
+
+        .action-card:hover {
+            transform: translateY(-7px);
+            box-shadow: 0 16px 32px rgba(0,90,65,.12);
+            border-color: #a9e4d0;
+        }
+
+        .action-icon {
+            width: 62px;
+            height: 62px;
+            border-radius: 17px;
+            background: #e3f7ef;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 22px;
+        }
+
+        .action-icon i {
+            font-size: 27px;
+            color: #00856b;
+        }
+
+        .action-card h5 {
+            font-size: 20px;
+            font-weight: 800;
+            color: #124b3e;
+            margin-bottom: 12px;
+        }
+
+        .action-card p {
+            font-size: 14px;
+            line-height: 1.8;
+            color: #718b83;
+            min-height: 50px;
+        }
+
+        .action-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            color: #00856b;
+            font-weight: 800;
+            font-size: 14px;
+            margin-top: 8px;
+            transition: .2s;
+        }
+
+        .action-link:hover {
+            color: #005b49;
+            gap: 13px;
+        }
+
+        .motivation {
+            background: linear-gradient(115deg,#005b49,#079b7c);
+            color: white;
+            padding: 36px;
+            border-radius: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 25px;
+            margin-bottom: 48px;
+            box-shadow: 0 12px 28px rgba(0,90,65,.13);
+        }
+
+        .motivation h3 {
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+
+        .motivation p {
+            color: #d9fff1;
+            margin: 0;
+            line-height: 1.8;
+        }
+
+        .motivation i {
+            font-size: 60px;
+            color: #b7f4dd;
+        }
+
+        .account-box {
+            background: rgba(255,255,255,.96);
+            padding: 30px;
+            border-radius: 22px;
+            border: 1px solid #dcefe6;
+            box-shadow: 0 12px 35px rgba(0,90,65,.07);
+        }
+
+        .account-box p {
+            color: #718b83;
+            margin: 15px 0;
+        }
+
+        .account-box strong {
+            color: #124b3e;
+        }
+
+        .form-label {
+            color: #174d43;
+            margin-bottom: 9px;
+        }
+
+        .form-control, .form-select {
+            border: 1px solid #d9eae2;
+            border-radius: 11px;
+            padding: 12px 14px;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: #10a981;
+            box-shadow: 0 0 0 4px rgba(16,169,129,.12);
+        }
+
+        .logo-upload-box {
+            background: linear-gradient(135deg,#ecfdf5,#f0fdf4);
+            border: 2px dashed #10b981;
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .logo-preview {
+            width: 125px;
+            height: 125px;
+            object-fit: contain;
+            border-radius: 20px;
+            background: white;
+            padding: 10px;
+            margin: 0 auto 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,.08);
+        }
+
+        .upload-icon {
+            font-size: 45px;
+            color: #059669;
+            margin-bottom: 15px;
+        }
+
+        .save-btn {
+            background: linear-gradient(110deg,#00856b,#12b98d);
+            border: none;
+            color: white;
+            border-radius: 12px;
+            padding: 14px 25px;
+            font-weight: 800;
+            transition: .3s;
+        }
+
+        .save-btn:hover {
+            background: linear-gradient(110deg,#006b58,#079b7c);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,133,107,.2);
+        }
+
+        footer {
+            text-align: center;
+            padding: 27px;
+            color: #718b83;
+            background: white;
+            font-size: 13px;
+            border-top: 1px solid #e1f0e9;
+            line-height: 1.9;
+        }
+
+        @media(max-width:950px) {
+            .hero { flex-direction: column; }
+            .hero-content { width: 100%; }
+            .hero-image { width: 100%; min-height: 260px; }
+            .stats-grid { grid-template-columns: repeat(2,1fr); }
+            .action-grid { grid-template-columns: repeat(2,1fr); }
+        }
+
+        @media(max-width:600px) {
+            .main-container { padding: 22px 16px 40px; }
+            .stats-grid,.action-grid { grid-template-columns: 1fr; }
+            .hero-content { padding: 28px; }
+            .motivation {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 27px;
+            }
+            .nav-user { display: none; }
+            .brand-logo { width: 125px; }
+            .account-box { padding: 20px; }
+            .logo-upload-box { padding: 20px; }
+        }
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar">
+    <div class="container-fluid d-flex justify-content-between align-items-center">
+
+        <a href="{{ url_for('home') }}" class="text-decoration-none">
+            <img src="{{ url_for('static', filename='images/smarthire-logo.png') }}"
+                 alt="SmartHire Logo" class="brand-logo">
+        </a>
+
+        <div class="d-flex align-items-center gap-3">
+            <span class="nav-user">
+                <i class="fa-solid fa-circle-user"></i>
+                {{ current_user.full_name }}
+            </span>
+
+            <a href="{{ url_for('logout') }}" class="logout-btn">
+                <i class="fa-solid fa-right-from-bracket"></i> Logout
+            </a>
+        </div>
+
+    </div>
+</nav>
+
+<div class="main-container">
+
+    <!-- HERO -->
+    <div class="hero">
+        <div class="hero-content">
+            <span class="hero-tag">
+                <i class="fa-solid fa-building"></i>
+                RECRUITER WORKSPACE
+            </span>
+
+            <h1>Find the Right Talent. Build the Future!</h1>
+
+            <p>
+                Connect with skilled professionals, discover talented candidates,
+                and build a strong team that drives your organization forward.
+            </p>
+
+            <a href="#actions" class="hero-btn">
+                Explore Recruiter Tools
+                <i class="fa-solid fa-arrow-right ms-2"></i>
+            </a>
+        </div>
+
+        <div class="hero-image"></div>
+    </div>
+
+    <!-- RECRUITMENT OVERVIEW -->
+    <h2 class="section-title">Recruitment Overview</h2>
+    <p class="section-description">
+        Manage your hiring activities from one convenient workspace.
+    </p>
+
+    <div class="stats-grid">
+
+        <div class="stat-card">
+            <div class="stat-icon green-bg">
+                <i class="fa-solid fa-briefcase"></i>
+            </div>
+            <h3>{{ jobs_count|default(0) }}</h3>
+            <p>Jobs Posted</p>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon mint-bg">
+                <i class="fa-solid fa-users"></i>
+            </div>
+            <h3>{{ applicants_count|default(0) }}</h3>
+            <p>Total Applicants</p>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon teal-bg">
+                <i class="fa-solid fa-user-check"></i>
+            </div>
+            <h3>{{ shortlisted_count|default(0) }}</h3>
+            <p>Shortlisted Candidates</p>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon lime-bg">
+                <i class="fa-solid fa-calendar-check"></i>
+            </div>
+            <h3>{{ selected_count|default(0) }}</h3>
+            <p>Selected Candidates</p>
+        </div>
+
+    </div>
+
+    <!-- RECRUITER WORKSPACE -->
+    <section id="actions">
+
+        <h2 class="section-title">Recruiter Workspace</h2>
+        <p class="section-description">
+            Everything you need to find and manage the right candidates.
+        </p>
+
+        <div class="action-grid">
+
+            <div class="action-card">
+                <div class="action-icon">
+                    <i class="fa-solid fa-circle-plus"></i>
+                </div>
+                <h5>Post a New Job</h5>
+                <p>Create job openings and reach professionals looking for opportunities.</p>
+                <a href="{{ url_for('post_job') }}" class="action-link">
+                    Create Job <i class="fa-solid fa-arrow-right"></i>
+                </a>
+            </div>
+
+            <div class="action-card">
+                <div class="action-icon">
+                    <i class="fa-solid fa-list-check"></i>
+                </div>
+                <h5>Manage Job Listings</h5>
+                <p>View, update, and manage all your published job opportunities.</p>
+                <a href="{{ url_for('manage_jobs') }}" class="action-link">
+                    Manage Jobs <i class="fa-solid fa-arrow-right"></i>
+                </a>
+            </div>
+
+            <div class="action-card">
+                <div class="action-icon">
+                    <i class="fa-solid fa-user-group"></i>
+                </div>
+                <h5>View Applicants</h5>
+                <p>Explore candidate applications and review their professional profiles.</p>
+                <a href="{{ url_for('view_applicants') }}" class="action-link">
+                    View Applicants <i class="fa-solid fa-arrow-right"></i>
+                </a>
+            </div>
+
+            <div class="action-card">
+                <div class="action-icon">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </div>
+                <h5>Search Candidates</h5>
+                <p>Discover job seekers by name, skills, and location. Explore their education and experience.</p>
+                <a href="{{ url_for('candidate_search') }}" class="action-link">
+                    Find Candidates <i class="fa-solid fa-arrow-right"></i>
+                </a>
+            </div>
+
+            <div class="action-card">
+                <div class="action-icon">
+                    <i class="fa-solid fa-building"></i>
+                </div>
+                <h5>Company Profile</h5>
+                <p>Showcase your organization, company details, and workplace culture.</p>
+                <a href="#company-profile" class="action-link">
+                    Manage Company <i class="fa-solid fa-arrow-right"></i>
+                </a>
+            </div>
+
+            <div class="action-card">
+                <div class="action-icon">
+                    <i class="fa-solid fa-robot"></i>
+                </div>
+                <h5>AI Resume Screening</h5>
+                <p>Discover suitable candidates with intelligent resume analysis.</p>
+                <a href="{{ url_for('manage_jobs') }}" class="action-link">
+                    View Job Screening <i class="fa-solid fa-arrow-right"></i>
+                </a>
+            </div>
+
+            <div class="action-card">
+                <div class="action-icon">
+                    <i class="fa-solid fa-chart-line"></i>
+                </div>
+                <h5>Recruitment Analytics</h5>
+                <p>Understand hiring activity and monitor recruitment performance.</p>
+                <a href="{{ url_for('recruitment_analytics') }}" class="action-link">
+                    View Analytics <i class="fa-solid fa-arrow-right"></i>
+                </a>
+            </div>
+
+            <div class="action-card">
+                <div class="action-icon">
+                    <i class="fa-solid fa-bell"></i>
+                </div>
+                <h5>Notifications</h5>
+                <p>View application updates and important recruitment notifications.</p>
+                <a href="{{ url_for('notifications') }}" class="action-link">
+                    View Notifications <i class="fa-solid fa-arrow-right"></i>
+                </a>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- MOTIVATION -->
+    <div class="motivation">
+        <div>
+            <h3>Great Teams Begin With Great Hiring!</h3>
+            <p>
+                Discover potential, support talent, and bring the right people
+                together to create something extraordinary.
+            </p>
+        </div>
+        <i class="fa-solid fa-people-group"></i>
+    </div>
+
+    <!-- COMPANY PROFILE MANAGEMENT -->
+    <section id="company-profile" class="mb-5">
+
+        <h2 class="section-title">
+            <i class="fa-solid fa-building"></i>
+            Company Profile Management
+        </h2>
+
+        <p class="section-description">
+            Create or update your organization's information directly from your dashboard.
+        </p>
+
+        <div class="account-box">
+
+            <form action="{{ url_for('company_profile') }}"
+                  method="POST"
+                  enctype="multipart/form-data">
+
+                <div class="row g-4">
+
+                    <!-- COMPANY LOGO UPLOAD -->
+                    <div class="col-12">
+
+                        <label class="form-label fw-bold">
+                            <i class="fa-solid fa-image me-2"></i>
+                            Company Logo
+                        </label>
+
+                        <div class="logo-upload-box">
+
+                            {% if company and company.logo %}
+                                <img
+                                    id="companyLogoPreview"
+                                    src="{{ url_for('static', filename=company.logo) }}"
+                                    alt="Company Logo"
+                                    class="logo-preview">
+                            {% else %}
+                                <img
+                                    id="companyLogoPreview"
+                                    src=""
+                                    alt="Logo Preview"
+                                    class="logo-preview"
+                                    style="display:none;">
+
+                                <div id="uploadPlaceholder">
+                                    <i class="fa-solid fa-cloud-arrow-up upload-icon"></i>
+                                </div>
+                            {% endif %}
+
+                            <h6 class="fw-bold mt-2">Upload Your Company Logo</h6>
+
+                            <p class="text-muted small">
+                                Choose a PNG, JPG, JPEG or WEBP image
+                            </p>
+
+                            <input
+                                type="file"
+                                name="logo"
+                                id="companyLogoInput"
+                                class="form-control"
+                                accept=".png,.jpg,.jpeg,.webp">
+
+                            <small class="text-muted d-block mt-2">
+                                Your logo preview will appear here before saving.
+                            </small>
+
+                        </div>
+                    </div>
+
+                    <!-- COMPANY NAME -->
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Company Name *</label>
+                        <input
+                            type="text"
+                            name="company_name"
+                            class="form-control"
+                            placeholder="Enter company name"
+                            value="{{ company.company_name if company else '' }}"
+                            required>
+                    </div>
+
+                    <!-- INDUSTRY -->
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Industry</label>
+                        <input
+                            type="text"
+                            name="industry"
+                            class="form-control"
+                            placeholder="Example: IT, Healthcare, Finance"
+                            value="{{ company.industry if company else '' }}">
+                    </div>
+
+                    <!-- WEBSITE -->
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Company Website</label>
+                        <input
+                            type="url"
+                            name="website"
+                            class="form-control"
+                            placeholder="https://yourcompany.com"
+                            value="{{ company.website if company else '' }}">
+                    </div>
+
+                    <!-- COMPANY SIZE -->
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Company Size</label>
+                        <select name="company_size" class="form-select">
+                            <option value="">Select Company Size</option>
+
+                            {% for size in [
+                                '1-10 Employees',
+                                '11-50 Employees',
+                                '51-200 Employees',
+                                '201-500 Employees',
+                                '501-1000 Employees',
+                                '1000+ Employees'
+                            ] %}
+                                <option value="{{ size }}"
+                                    {% if company and company.company_size == size %}selected{% endif %}>
+                                    {{ size }}
+                                </option>
+                            {% endfor %}
+
+                        </select>
+                    </div>
+
+                    <!-- LOCATION -->
+                    <div class="col-12">
+                        <label class="form-label fw-bold">Company Location</label>
+                        <input
+                            type="text"
+                            name="location"
+                            class="form-control"
+                            placeholder="Enter company location"
+                            value="{{ company.location if company else '' }}">
+                    </div>
+
+                    <!-- DESCRIPTION -->
+                    <div class="col-12">
+                        <label class="form-label fw-bold">Company Description</label>
+                        <textarea
+                            name="description"
+                            class="form-control"
+                            rows="5"
+                            placeholder="Describe your company, services and workplace culture">{{ company.description if company else '' }}</textarea>
+                    </div>
+
+                    <!-- SAVE BUTTON -->
+                    <div class="col-12">
+                        <button type="submit" class="save-btn">
+                            <i class="fa-solid fa-floppy-disk me-2"></i>
+                            Save / Update Company Profile
+                        </button>
+                    </div>
+
+                </div>
+
+            </form>
+
+        </div>
+    </section>
+
+    <!-- RECRUITER ACCOUNT -->
+    <h2 class="section-title">Recruiter Account</h2>
+    <p class="section-description">
+        Your registered SmartHire account information.
+    </p>
+
+    <div class="account-box">
+        <p><strong>Full Name:</strong> {{ current_user.full_name }}</p>
+        <p><strong>Email:</strong> {{ current_user.email }}</p>
+        <p><strong>Account Type:</strong> Recruiter</p>
+    </div>
+
+</div>
+
+<footer>
+    © 2026 SmartHire | AI-Powered All-in-One Job Portal Platform
+    <br>
+    Connect Talent. Create Opportunities. Build Success.
+</footer>
+
+<script>
+    // Instant company logo preview
+    document.getElementById("companyLogoInput").addEventListener("change", function(event) {
+
+        const file = event.target.files[0];
+
+        if (!file) {
+            return;
+        }
+
+        const allowedTypes = [
+            "image/png",
+            "image/jpeg",
+            "image/webp"
+        ];
+
+        if (!allowedTypes.includes(file.type)) {
+            alert("Please select a PNG, JPG, JPEG or WEBP image.");
+            event.target.value = "";
+            return;
+        }
+
+        // Limit logo size to 2 MB
+        if (file.size > 2 * 1024 * 1024) {
+            alert("Logo size must be less than 2 MB.");
+            event.target.value = "";
+            return;
+        }
+
+        const reader = new FileReader();
+
+        reader.onload = function(e) {
+
+            const preview = document.getElementById("companyLogoPreview");
+
+            preview.src = e.target.result;
+            preview.style.display = "block";
+
+            const placeholder = document.getElementById("uploadPlaceholder");
+
+            if (placeholder) {
+                placeholder.style.display = "none";
+            }
+        };
+
+        reader.readAsDataURL(file);
+    });
+</script>
+
+</body>
+</html>
